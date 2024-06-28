@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1071819899595",
+    "project_id": "coffeecompass-1700d",
+    "storage_bucket": "coffeecompass-1700d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1071819899595:android:207423939de6dc69a9514e",
+        "android_client_info": {
+          "package_name": "com.example.coffeecompass"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBvqO9apCS-DK4Olk0KW7y1Thtz2vcOcKE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
