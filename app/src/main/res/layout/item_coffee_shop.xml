@@ -3,48 +3,38 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp"
-    android:background="@drawable/card_background"
-    android:layout_marginBottom="8dp"
-    android:elevation="4dp">
+    android:padding="8dp">
+
+    RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/coffeeShopImageView"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="200dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_coffee_shop_placeholder" />
+        android:contentDescription="@string/search_by_coffee" />
 
     <TextView
-        android:id="@+id/tvCoffeeShopName"
-        android:layout_width="wrap_content"
+        android:id="@+id/coffeeShopNameTextView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Coffee Shop Name"
         android:textStyle="bold"
-        android:textSize="16sp"
+        android:textSize="18sp"
         android:paddingTop="8dp" />
 
     <TextView
-        android:id="@+id/tvCoffeeShopRating"
-        android:layout_width="wrap_content"
+        android:id="@+id/coffeeShopAddressTextView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Rating: 5.0"
-        android:textSize="14sp"
-        android:paddingTop="4dp"/>
+        android:paddingTop="4dp" />
 
     <TextView
-        android:id="@+id/tvCoffeeShopPrice"
-        android:layout_width="wrap_content"
+        android:id="@+id/coffeeShopRateTextView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Price: $10"
-        android:textSize="14sp"
-        android:paddingTop="4dp"/>
+        android:paddingTop="4dp" />
 
-    <TextView
-        android:id="@+id/tvCoffeeShopAddress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Address: 123 Main St"
-        android:textSize="14sp"
-        android:paddingTop="4dp"/>
 </LinearLayout>
