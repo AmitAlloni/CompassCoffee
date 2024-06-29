@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".HomeActivity">
+    tools:context=".activity.HomeActivity">
 
     <!-- Top Search Icons and Input -->
     <LinearLayout
@@ -52,13 +52,14 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="600dp"
-        android:layout_weight="1"
+        android:layout_height="match_parent"
         android:layout_below="@id/titleVisitAgain"
+        android:layout_above="@id/bottomNavigation"
         android:layout_margin="16dp"/>
 
     <!-- Bottom Navigation Bar -->
     <LinearLayout
+        android:id="@+id/bottomNavigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -76,7 +77,7 @@
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_coffee_shops" />
+                android:src="@drawable/ic_coffee_shops_color" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

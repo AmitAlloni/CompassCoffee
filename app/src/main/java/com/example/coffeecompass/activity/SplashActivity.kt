@@ -1,4 +1,4 @@
-package com.example.coffeecompass
+package com.example.coffeecompass.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +7,7 @@ import android.os.Looper
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import androidx.activity.ComponentActivity
+import com.example.coffeecompass.R
 
 class SplashActivity : ComponentActivity() {
     private val SPLASH_TIME_OUT: Long = 3000 // 3 seconds

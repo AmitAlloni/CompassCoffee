@@ -1,0 +1,25 @@
+{
+  "coffeeShops": {
+    "1": {
+      "name": "Coffee House",
+      "rating": 4.5,
+      "price": "$10",
+      "address": "123 Main St",
+      "imageUrl": "https://example.com/coffeehouse.jpg"
+    },
+    "2": {
+      "name": "Brewed Awakenings",
+      "rating": 4.0,
+      "price": "$12",
+      "address": "456 Elm St",
+      "imageUrl": "https://example.com/brewedawakenings.jpg"
+    },
+    "3": {
+      "name": "Cafe Latte",
+      "rating": 4.7,
+      "price": "$8",
+      "address": "789 Oak St",
+      "imageUrl": "https://example.com/cafelatte.jpg"
+    }
+  }
+}
