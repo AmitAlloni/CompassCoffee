@@ -46,7 +46,7 @@ class CoffeeShopAdapter(private var coffeeShops: List<CoffeeShop>) :
             rateTextView.text = coffeeShop.rate.toString()
 
             // Load image using Picasso with logging
-            val imageUrl = coffeeShop.imageURL
+            val imageUrl = coffeeShop.imageUrl
             if (!imageUrl.isNullOrEmpty()) {
                 Picasso.get()
                     .load(imageUrl)

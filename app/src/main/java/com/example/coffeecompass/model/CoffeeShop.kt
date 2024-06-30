@@ -8,5 +8,5 @@ data class CoffeeShop(
     val rate: Float = 0.0f,
     /*val reviews: List<Review> = emptyList(),*/
     val products: List<Map<String, Any>> = emptyList(),
-    val imageURL: String = ""
+    val imageUrl: String = ""
 )
