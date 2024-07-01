@@ -9,7 +9,7 @@ import com.example.coffeecompass.room.CoffeeShopDao
 
 @Database(entities = [CoffeeShop::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun userDao(): CoffeeShopDao
+    abstract fun coffeeShopDao(): CoffeeShopDao
 
     companion object AppDatabaseLocal {
         @Volatile

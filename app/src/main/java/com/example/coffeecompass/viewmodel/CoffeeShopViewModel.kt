@@ -1,17 +1,21 @@
 package com.example.coffeecompass.viewmodel
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
+import com.example.coffeecompass.AppDatabase
 import com.example.coffeecompass.model.CoffeeShop
 import com.example.coffeecompass.repository.CoffeeShopRepository
-import kotlinx.coroutines.Dispatchers
 
-class CoffeeShopViewModel : ViewModel() {
-    private val repository = CoffeeShopRepository()
+class CoffeeShopViewModel(application: Application) : AndroidViewModel(application) {
+    private val repository: CoffeeShopRepository
 
-    val coffeeShops: LiveData<List<CoffeeShop>> = liveData(Dispatchers.IO) {
-        val data = repository.getCoffeeShops()
-        emitSource(data)
+    init {
+        val database = AppDatabase.getDatabase(application)
+        repository = CoffeeShopRepository(database)
+    }
+
+    fun getAllCoffeeShops(): LiveData<List<CoffeeShop>> {
+        return repository.getAllCoffeeShops()
     }
 }
