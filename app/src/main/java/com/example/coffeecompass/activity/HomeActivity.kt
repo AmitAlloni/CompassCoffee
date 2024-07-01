@@ -1,5 +1,6 @@
 package com.example.coffeecompass.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.activity.viewModels
@@ -7,9 +8,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.coffeecompass.R
 import com.example.coffeecompass.adapter.CoffeeShopAdapter
+import com.example.coffeecompass.databinding.ActivityHomeBinding
 import com.example.coffeecompass.fragment.CoffeeShopsFragment
 import com.example.coffeecompass.fragment.HomeFragment
 import com.example.coffeecompass.fragment.ProfileFragment
@@ -21,24 +22,28 @@ class HomeActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
     private val viewModel: CoffeeShopViewModel by viewModels()
     private lateinit var coffeeShopAdapter: CoffeeShopAdapter
+    private lateinit var binding: ActivityHomeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
+        binding = ActivityHomeBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        coffeeShopAdapter = CoffeeShopAdapter(listOf())
+        coffeeShopAdapter = CoffeeShopAdapter(listOf()) { coffeeShop ->
+            val intent = Intent(this, CoffeeShopDetailActivity::class.java)
+            intent.putExtra("coffee_shop", coffeeShop)
+            startActivity(intent)
+        }
 
-        val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = coffeeShopAdapter
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.adapter = coffeeShopAdapter
 
         // Observe LiveData and update RecyclerView adapter
         viewModel.getAllCoffeeShops().observe(this, Observer { coffeeShops ->
             coffeeShopAdapter.updateData(coffeeShops)
         })
 
-        val bottomNavigation: BottomNavigationView = findViewById(R.id.bottom_navigation)
-        bottomNavigation.setOnNavigationItemSelectedListener(this)
+        binding.bottomNavigation.setOnNavigationItemSelectedListener(this)
 
         // Set default fragment
         loadFragment(HomeFragment())

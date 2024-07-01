@@ -5,21 +5,21 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.coffeecompass.model.CoffeeShop
+import com.example.coffeecompass.model.LocalCoffeeShop
 
 @Dao
 interface CoffeeShopDao {
     @Query("SELECT * FROM coffee_shops")
-    fun getAll(): LiveData<List<CoffeeShop>>
+    fun getAll(): LiveData<List<LocalCoffeeShop>>
 
     @Query("SELECT * FROM coffee_shops")
-    fun getAllSync(): List<CoffeeShop> // Synchronous version for internal checks
+    fun getAllSync(): List<LocalCoffeeShop> // Synchronous version for internal checks
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(coffeeShop: CoffeeShop)
+    fun insert(coffeeShop: LocalCoffeeShop)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(coffeeShops: List<CoffeeShop>)
+    fun insertAll(coffeeShops: List<LocalCoffeeShop>)
 
     @Query("DELETE FROM coffee_shops")
     fun deleteAll()

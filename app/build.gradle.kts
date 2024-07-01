@@ -21,6 +21,9 @@ android {
             useSupportLibrary = true
         }
     }
+    viewBinding{
+        enable = true
+    }
 
     buildTypes {
         release {
@@ -57,6 +60,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.jetbrains.kotlin.android.extensions.runtime)
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
@@ -71,6 +75,10 @@ dependencies {
     implementation(libs.gson)
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.recyclerview)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
+
     annotationProcessor(libs.compiler)
     kapt(libs.androidx.room.compiler)
 

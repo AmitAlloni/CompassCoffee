@@ -6,7 +6,7 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import com.example.coffeecompass.model.CoffeeShop
+import com.example.coffeecompass.model.LocalCoffeeShop
 import com.example.coffeecompass.room.AppDatabase
 import com.example.coffeecompass.room.CoffeeShopDao
 import com.google.gson.Gson
@@ -18,17 +18,17 @@ import java.io.InputStreamReader
 
 class CoffeeShopViewModel(application: Application) : AndroidViewModel(application) {
     private val coffeeShopDao: CoffeeShopDao = AppDatabase.getDatabase(application).coffeeShopDao()
-    private val allCoffeeShops: LiveData<List<CoffeeShop>> = coffeeShopDao.getAll()
+    private val allCoffeeShops: LiveData<List<LocalCoffeeShop>> = coffeeShopDao.getAll()
 
-    fun getAllCoffeeShops(): LiveData<List<CoffeeShop>> {
+    fun getAllCoffeeShops(): LiveData<List<LocalCoffeeShop>> {
         return allCoffeeShops
     }
 
-    fun insert(coffeeShop: CoffeeShop) = viewModelScope.launch(Dispatchers.IO) {
+    fun insert(coffeeShop: LocalCoffeeShop) = viewModelScope.launch(Dispatchers.IO) {
         coffeeShopDao.insert(coffeeShop)
     }
 
-    fun insertAll(coffeeShops: List<CoffeeShop>) = viewModelScope.launch(Dispatchers.IO) {
+    fun insertAll(coffeeShops: List<LocalCoffeeShop>) = viewModelScope.launch(Dispatchers.IO) {
         coffeeShopDao.insertAll(coffeeShops)
     }
 
@@ -38,8 +38,8 @@ class CoffeeShopViewModel(application: Application) : AndroidViewModel(applicati
                 if (coffeeShopDao.getAllSync().isEmpty()) { // Check if the database is empty
                     val inputStream = context.assets.open(fileName)
                     val json = InputStreamReader(inputStream).use { it.readText() }
-                    val coffeeShopListType = object : TypeToken<List<CoffeeShop>>() {}.type
-                    val coffeeShops: List<CoffeeShop> = Gson().fromJson(json, coffeeShopListType)
+                    val coffeeShopListType = object : TypeToken<List<LocalCoffeeShop>>() {}.type
+                    val coffeeShops: List<LocalCoffeeShop> = Gson().fromJson(json, coffeeShopListType)
                     insertAll(coffeeShops)
                 }
                 true

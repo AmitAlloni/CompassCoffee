@@ -8,11 +8,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coffeecompass.R
-import com.example.coffeecompass.model.CoffeeShop
+import com.example.coffeecompass.model.LocalCoffeeShop
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 
-class CoffeeShopAdapter(private var coffeeShops: List<CoffeeShop>) :
+class CoffeeShopAdapter(private var coffeeShops: List<LocalCoffeeShop>, private val itemClickListener: (LocalCoffeeShop) -> Unit) :
     RecyclerView.Adapter<CoffeeShopAdapter.CoffeeShopViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CoffeeShopViewHolder {
@@ -22,14 +22,14 @@ class CoffeeShopAdapter(private var coffeeShops: List<CoffeeShop>) :
 
     override fun onBindViewHolder(holder: CoffeeShopViewHolder, position: Int) {
         val coffeeShop = coffeeShops[position]
-        holder.bind(coffeeShop)
+        holder.bind(coffeeShop, itemClickListener)
     }
 
     override fun getItemCount(): Int {
         return coffeeShops.size
     }
 
-    fun updateData(newCoffeeShops: List<CoffeeShop>) {
+    fun updateData(newCoffeeShops: List<LocalCoffeeShop>) {
         coffeeShops = newCoffeeShops
         notifyDataSetChanged()
     }
@@ -40,10 +40,12 @@ class CoffeeShopAdapter(private var coffeeShops: List<CoffeeShop>) :
         private val addressTextView: TextView = itemView.findViewById(R.id.coffeeShopAddressTextView)
         private val rateTextView: TextView = itemView.findViewById(R.id.coffeeShopRateTextView)
 
-        fun bind(coffeeShop: CoffeeShop) {
+        fun bind(coffeeShop: LocalCoffeeShop, itemClickListener: (LocalCoffeeShop) -> Unit) {
             nameTextView.text = coffeeShop.name
             addressTextView.text = coffeeShop.address
             rateTextView.text = coffeeShop.rate.toString()
+
+            itemView.setOnClickListener { itemClickListener(coffeeShop) }
 
             // Load image using Picasso with logging
             val imageUrl = coffeeShop.imageUrl
