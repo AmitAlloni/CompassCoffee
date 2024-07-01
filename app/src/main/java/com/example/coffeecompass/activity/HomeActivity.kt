@@ -33,7 +33,7 @@ class HomeActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         recyclerView.adapter = coffeeShopAdapter
 
         // Observe LiveData and update RecyclerView adapter
-        viewModel.coffeeShops.observe(this, Observer { coffeeShops ->
+        viewModel.getAllCoffeeShops().observe(this, Observer { coffeeShops ->
             coffeeShopAdapter.updateData(coffeeShops)
         })
 

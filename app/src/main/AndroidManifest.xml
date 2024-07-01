@@ -15,6 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CoffeeCompass"
         tools:targetApi="31">
+
         <activity
             android:name=".activity.SplashActivity"
             android:exported="true"

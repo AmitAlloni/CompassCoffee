@@ -1,74 +1,51 @@
 package com.example.coffeecompass.repository
 
+import android.content.Context
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.example.coffeecompass.model.CoffeeShop
-import com.example.coffeecompass.model.Review
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.ktx.toObject
+import com.example.coffeecompass.room.CoffeeShopDao
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.launch
+import com.google.gson.Gson
 import kotlinx.coroutines.withContext
 
-class CoffeeShopRepository {
-    private val db = FirebaseFirestore.getInstance()
-    private val coffeeShposRef = db.collection("coffee_shpos")
+class CoffeeShopRepository(private val coffeeShopDao: CoffeeShopDao, private val scope: CoroutineScope) {
 
-    suspend fun getCoffeeShops(): LiveData<List<CoffeeShop>> {
-        val data = MutableLiveData<List<CoffeeShop>>()
-
-        try {
-            val result = coffeeShposRef.get().await()
-            val coffeeShops = mutableListOf<CoffeeShop>()
-            for (document in result) {
-                Log.d("CoffeeShopRepository", "Document data: ${document.data}")
-//                val reviews = getReviews(document.id)
-                val coffeeShop = document.toObject<CoffeeShop>()?.copy(
-                    /*reviews = reviews*/
-                )
-                if (coffeeShop != null) {
-                    coffeeShops.add(coffeeShop)
-                }
-            }
-            withContext(Dispatchers.Main) {
-                data.value = coffeeShops
-            }
-            Log.d("CoffeeShopRepository", "Fetched coffee shops: $coffeeShops")
-        } catch (e: Exception) {
-            Log.e("CoffeeShopRepository", "Error fetching coffee shops", e)
+    fun insert(coffeeShop: CoffeeShop) {
+        scope.launch {
+            coffeeShopDao.insert(coffeeShop)
+            Log.d("Database", "Inserted coffee shop: $coffeeShop")
         }
-
-        return data
     }
 
-    /*private suspend fun getReviews(coffeeShopId: String): List<Review> {
-        return try {
-            val result = coffeeShposRef.document(coffeeShopId).collection("reviews").get().await()
-            val reviews = result.documents.mapNotNull { document ->
-                val reviewData = document.data
-                if (reviewData != null) {
-                    Review(
-                        id = document.id,
-                        writer = (reviewData["user_id"] as? DocumentReference)?.id ?: "",
-                        coffeeShop = coffeeShopId,
-                        date = reviewData["date"] as? com.google.firebase.Timestamp,
-                        rate = (reviewData["rate"] as? Long)?.toInt() ?: 0,
-                        flavor = (reviewData["flavor"] as? Long)?.toInt() ?: 0,
-                        price = (reviewData["price"] as? Long)?.toInt() ?: 0,
-                        photo = reviewData["photo"] as? String ?: "",
-                        body = reviewData["body"] as? String ?: ""
-                    )
-                } else {
-                    null
+    fun insertAllFromJson(context: Context, fileName: String) {
+        scope.launch(Dispatchers.IO) {
+            val inputStream = context.assets.open(fileName)
+            val json = inputStream.bufferedReader().use { it.readText() }
+            val coffeeShops = Gson().fromJson(json, Array<CoffeeShop>::class.java).toList()
+
+            coffeeShopDao.insertAll(coffeeShops)
+            Log.d("Database", "Inserted ${coffeeShops.size} coffee shops from $fileName")
+
+            // Query to verify insertion
+            withContext(Dispatchers.Main) {
+                coffeeShopDao.getAll().observeForever { list ->
+                    Log.d("Database", "All Coffee Shops: $list")
                 }
             }
-            Log.d("CoffeeShopRepository", "Fetched reviews for $coffeeShopId: $reviews")
-            reviews
-        } catch (e: Exception) {
-            Log.e("CoffeeShopRepository", "Error fetching reviews for $coffeeShopId", e)
-            emptyList()
         }
-    }*/
+    }
+
+    fun getAllCoffeeShops() {
+        scope.launch {
+            coffeeShopDao.getAll().observeForever { list ->
+                Log.d("Database", "Retrieved ${list.size} coffee shops from the database")
+                for (shop in list) {
+                    Log.d("Database", shop.toString())
+                }
+            }
+        }
+    }
 }
+
