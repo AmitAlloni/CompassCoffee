@@ -2,29 +2,34 @@ package com.example.coffeecompass.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.view.animation.AnimationUtils
-import android.widget.ImageView
-import androidx.activity.ComponentActivity
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.example.coffeecompass.R
+import com.example.coffeecompass.viewmodel.CoffeeShopViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
-class SplashActivity : ComponentActivity() {
-    private val SPLASH_TIME_OUT: Long = 3000 // 3 seconds
+class SplashActivity : AppCompatActivity() {
+
+    private val viewModel: CoffeeShopViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        // Apply fade-in animation to the logo
-        val logoImageView: ImageView = findViewById(R.id.logoImageView)
-        val fadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in)
-        logoImageView.startAnimation(fadeIn)
+        lifecycleScope.launch {
+            val dataLoaded = viewModel.loadDataFromJson("coffeeshops.json", applicationContext)
 
-        Handler(Looper.getMainLooper()).postDelayed({
-            // Start MainActivity after the splash screen
-            startActivity(Intent(this, HomeActivity::class.java))
-            finish()
-        }, SPLASH_TIME_OUT)
+            // Minimum delay to show splash screen for a reasonable time
+            delay(2000)
+
+            if (dataLoaded) {
+                startActivity(Intent(this@SplashActivity, HomeActivity::class.java))
+                finish()
+            } else {
+                // Handle the case where data loading failed
+            }
+        }
     }
 }
