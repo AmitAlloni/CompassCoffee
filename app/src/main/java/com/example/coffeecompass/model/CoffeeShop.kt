@@ -1,12 +1,15 @@
 package com.example.coffeecompass.model
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
+
+@Entity(tableName = "coffee_shops")
 data class CoffeeShop(
-    val id: String = "",
-    val name: String = "",
-    val address: String = "",
-    val rate: Float = 0.0f,
-    /*val reviews: List<Review> = emptyList(),*/
-    val products: List<Map<String, Any>> = emptyList(),
-    val imageUrl: String = ""
+    @PrimaryKey @ColumnInfo(name = "id") val id: String,
+    @ColumnInfo(name = "name") val name: String,
+    @ColumnInfo(name = "address") val address: String,
+    @ColumnInfo(name = "rate") val rate: Float,
+    @ColumnInfo(name = "imageUrl") val imageUrl: String,
 )
