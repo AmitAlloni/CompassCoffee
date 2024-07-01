@@ -1,6 +1,7 @@
 package com.example.coffeecompass.repository
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import com.example.coffeecompass.room.AppDatabase
 import com.example.coffeecompass.model.CloudCoffeeShop
 import com.example.coffeecompass.model.LocalCoffeeShop
@@ -51,5 +52,13 @@ class CoffeeShopRepository(private val localDb: AppDatabase) {
         } catch (e: Exception) {
             Log.e("CoffeeShopRepository", "Error synchronizing coffee shops", e)
         }
+    }
+
+    fun getAllCoffeeShops(): LiveData<List<LocalCoffeeShop>> {
+        return localDb.coffeeShopDao().getAll()
+    }
+
+    fun getCoffeeShopById(id: String): LiveData<LocalCoffeeShop> {
+        return localDb.coffeeShopDao().getById(id)
     }
 }

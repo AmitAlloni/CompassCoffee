@@ -6,14 +6,14 @@
     android:padding="8dp">
 
     <TextView
-        android:id="@+id/review_writer"
+        android:id="@+id/reviewWriter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
         android:textStyle="bold"/>
 
     <TextView
-        android:id="@+id/review_body"
+        android:id="@+id/reviewBody"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="14sp"/>

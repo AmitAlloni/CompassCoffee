@@ -12,17 +12,19 @@ import com.example.coffeecompass.model.LocalCoffeeShop
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 
-class CoffeeShopAdapter(private var coffeeShops: List<LocalCoffeeShop>, private val itemClickListener: (LocalCoffeeShop) -> Unit) :
-    RecyclerView.Adapter<CoffeeShopAdapter.CoffeeShopViewHolder>() {
+class CoffeeShopAdapter(
+    private var coffeeShops: List<LocalCoffeeShop>,
+    private val onCoffeeShopClick: (LocalCoffeeShop) -> Unit
+) : RecyclerView.Adapter<CoffeeShopAdapter.CoffeeShopViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CoffeeShopViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_coffee_shop, parent, false)
-        return CoffeeShopViewHolder(itemView)
+        return CoffeeShopViewHolder(itemView, onCoffeeShopClick)
     }
 
     override fun onBindViewHolder(holder: CoffeeShopViewHolder, position: Int) {
         val coffeeShop = coffeeShops[position]
-        holder.bind(coffeeShop, itemClickListener)
+        holder.bind(coffeeShop)
     }
 
     override fun getItemCount(): Int {
@@ -34,18 +36,19 @@ class CoffeeShopAdapter(private var coffeeShops: List<LocalCoffeeShop>, private 
         notifyDataSetChanged()
     }
 
-    class CoffeeShopViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class CoffeeShopViewHolder(
+        itemView: View,
+        private val onCoffeeShopClick: (LocalCoffeeShop) -> Unit
+    ) : RecyclerView.ViewHolder(itemView) {
         private val imageView: ImageView = itemView.findViewById(R.id.coffeeShopImageView)
         private val nameTextView: TextView = itemView.findViewById(R.id.coffeeShopNameTextView)
         private val addressTextView: TextView = itemView.findViewById(R.id.coffeeShopAddressTextView)
         private val rateTextView: TextView = itemView.findViewById(R.id.coffeeShopRateTextView)
 
-        fun bind(coffeeShop: LocalCoffeeShop, itemClickListener: (LocalCoffeeShop) -> Unit) {
+        fun bind(coffeeShop: LocalCoffeeShop) {
             nameTextView.text = coffeeShop.name
             addressTextView.text = coffeeShop.address
             rateTextView.text = coffeeShop.rate.toString()
-
-            itemView.setOnClickListener { itemClickListener(coffeeShop) }
 
             // Load image using Picasso with logging
             val imageUrl = coffeeShop.imageUrl
@@ -65,6 +68,10 @@ class CoffeeShopAdapter(private var coffeeShops: List<LocalCoffeeShop>, private 
                     })
             } else {
                 imageView.setImageResource(R.drawable.ic_coffee_shop_placeholder)
+            }
+
+            itemView.setOnClickListener {
+                onCoffeeShopClick(coffeeShop)
             }
         }
     }

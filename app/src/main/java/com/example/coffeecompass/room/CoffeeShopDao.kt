@@ -12,6 +12,9 @@ interface CoffeeShopDao {
     @Query("SELECT * FROM coffee_shops")
     fun getAll(): LiveData<List<LocalCoffeeShop>>
 
+    @Query("SELECT * FROM coffee_shops WHERE id = :id")
+    fun getById(id: String): LiveData<LocalCoffeeShop>
+
     @Query("SELECT * FROM coffee_shops")
     fun getAllSync(): List<LocalCoffeeShop> // Synchronous version for internal checks
 
