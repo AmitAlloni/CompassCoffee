@@ -78,6 +78,7 @@ dependencies {
     implementation(libs.androidx.recyclerview)
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.jetbrains.kotlin.android.extensions.runtime)
 
     annotationProcessor(libs.compiler)
     kapt(libs.androidx.room.compiler)

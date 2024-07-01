@@ -5,7 +5,9 @@ import androidx.lifecycle.LiveData
 import com.example.coffeecompass.room.AppDatabase
 import com.example.coffeecompass.model.CloudCoffeeShop
 import com.example.coffeecompass.model.LocalCoffeeShop
+import com.example.coffeecompass.model.Product
 import com.example.coffeecompass.util.convertToLocalCoffeeShops
+import com.example.coffeecompass.util.mockProducts
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
@@ -26,6 +28,7 @@ class CoffeeShopRepository(private val localDb: AppDatabase) {
         } catch (e: Exception) {
             Log.e("CoffeeShopRepository", "Error fetching from Firestore", e)
         }
+        //insertProducts(mockProducts)
         return coffeeShops
     }
 
@@ -35,6 +38,17 @@ class CoffeeShopRepository(private val localDb: AppDatabase) {
                 localDb.coffeeShopDao().insertAll(coffeeShops)
             } catch (e: Exception) {
                 Log.e("CoffeeShopRepository", "Error inserting to local DB", e)
+            }
+        }
+    }
+
+    // Function to insert products into Firestore
+    private suspend fun insertProducts(products: List<Product>) {
+        withContext(Dispatchers.IO) {
+            val db = FirebaseFirestore.getInstance()
+            val productsCollection = db.collection("products")
+            for (product in products) {
+                productsCollection.document(product.id).set(product)
             }
         }
     }
@@ -60,5 +74,16 @@ class CoffeeShopRepository(private val localDb: AppDatabase) {
 
     fun getCoffeeShopById(id: String): LiveData<LocalCoffeeShop> {
         return localDb.coffeeShopDao().getById(id)
+    }
+
+    suspend fun insertCoffeeShopToFirestore(coffeeShop: CloudCoffeeShop) {
+        try {
+            firestore.collection("coffeeShops")
+                .document(coffeeShop.id)
+                .set(coffeeShop)
+                .await()
+        } catch (e: Exception) {
+            Log.e("CoffeeShopRepository", "Error inserting coffee shop to Firestore", e)
+        }
     }
 }

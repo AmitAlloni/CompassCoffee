@@ -1,6 +1,7 @@
 package com.example.coffeecompass.activity
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
@@ -13,9 +14,9 @@ import com.example.coffeecompass.adapter.ProductAdapter
 import com.example.coffeecompass.adapter.ReviewAdapter
 import com.example.coffeecompass.model.LocalCoffeeShop
 import com.example.coffeecompass.model.Product
-import com.example.coffeecompass.model.Review
 import com.example.coffeecompass.viewmodel.CoffeeShopViewModel
 import com.squareup.picasso.Picasso
+
 
 class CoffeeShopDetailActivity : AppCompatActivity() {
 
@@ -79,11 +80,12 @@ class CoffeeShopDetailActivity : AppCompatActivity() {
     }
 
     private fun fetchReviews(coffeeShopId: String) {
-        // Implement fetching reviews from Firestore and update the adapter
-        val reviews = listOf(
-            Review("1", "Alice", coffeeShopId, null, 5, 5, 5, "", "Great coffee!"),
-            Review("2", "Bob", coffeeShopId, null, 4, 4, 4, "", "Good service.")
-        )
-        reviewAdapter.updateData(reviews)
+        viewModel.getReviewsByCoffeeShopId(coffeeShopId).observe(this, Observer { reviews ->
+            reviewAdapter.updateData(reviews)
+            Log.println(Log.INFO,"CoffeeShopId",coffeeShopId)
+        })
     }
 }
+
+
+

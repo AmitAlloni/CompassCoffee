@@ -29,12 +29,5 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
-        suspend fun AppDatabase.insertAllFromJson(context: Context, filename: String) {
-            val inputStream = context.assets.open(filename)
-            val jsonReader = InputStreamReader(inputStream)
-            val coffeeShopType = object : TypeToken<List<LocalCoffeeShop>>() {}.type
-            val coffeeShops: List<LocalCoffeeShop> = Gson().fromJson(jsonReader, coffeeShopType)
-            this.coffeeShopDao().insertAll(coffeeShops)
-        }
     }
 }
