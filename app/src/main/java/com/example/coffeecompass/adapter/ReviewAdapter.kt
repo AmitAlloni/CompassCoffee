@@ -34,10 +34,12 @@ class ReviewAdapter(private var reviews: List<Review>) :
     class ReviewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val writerTextView: TextView = itemView.findViewById(R.id.reviewWriter)
         private val bodyTextView: TextView = itemView.findViewById(R.id.reviewBody)
+        private val reviewRatingTextView: TextView = itemView.findViewById(R.id.reviewRating)
 
         fun bind(review: Review) {
             writerTextView.text = review.writer
             bodyTextView.text = review.body
+            reviewRatingTextView.text = review.rate.toString()
         }
     }
 }
