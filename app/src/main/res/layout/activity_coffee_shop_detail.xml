@@ -11,33 +11,40 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:scaleType="centerCrop"
-        android:contentDescription="@string/search_by_coffee" />
+        android:contentDescription="@string/search_by_coffee"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/image_border"
+        android:elevation="8dp" />
+
 
     <TextView
         android:id="@+id/coffeeShopNameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="24sp"
+        android:textSize="28sp"
+        android:layout_marginTop="16dp"
         android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/coffeeShopAddressTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16sp"/>
+        android:textSize="20sp"
+        android:layout_marginBottom="8dp"/>
 
     <TextView
         android:id="@+id/coffeeShopRateTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16sp"/>
+        android:textSize="20sp"
+        android:layout_marginBottom="8dp"/>
 
     <TextView
         android:id="@+id/productsLabelTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Products"
-        android:textSize="20sp"
+        android:text="@string/products"
+        android:textSize="22sp"
         android:textStyle="bold"
         android:layout_marginTop="16dp"/>
 
@@ -45,14 +52,14 @@
         android:id="@+id/productsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="8dp"/>
 
     <TextView
         android:id="@+id/reviewsLabelTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Reviews"
-        android:textSize="20sp"
+        android:text="@string/reviews"
+        android:textSize="22sp"
         android:textStyle="bold"
         android:layout_marginTop="16dp"/>
 

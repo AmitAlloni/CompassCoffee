@@ -4,4 +4,6 @@
     <string name="search_by_coffee">Search by coffee type</string>
     <string name="search">search by key words</string>
     <string name="search_by_place">search by coffee shop</string>
+    <string name="products">Products</string>
+    <string name="reviews">Reviews</string>
 </resources>
