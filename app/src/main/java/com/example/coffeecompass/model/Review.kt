@@ -1,7 +1,7 @@
 package com.example.coffeecompass.model
 
 import com.google.firebase.Timestamp
-import com.google.firebase.firestore.DocumentReference
+
 
 data class Review(
     val id: String = "",

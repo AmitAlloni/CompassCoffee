@@ -1,5 +1,6 @@
 package com.example.coffeecompass.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.activity.viewModels
@@ -14,6 +15,7 @@ import com.example.coffeecompass.fragment.CoffeeShopsFragment
 import com.example.coffeecompass.fragment.HomeFragment
 import com.example.coffeecompass.fragment.ProfileFragment
 import com.example.coffeecompass.fragment.ReviewsFragment
+import com.example.coffeecompass.model.LocalCoffeeShop
 import com.example.coffeecompass.viewmodel.CoffeeShopViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -26,7 +28,7 @@ class HomeActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        coffeeShopAdapter = CoffeeShopAdapter(listOf())
+        coffeeShopAdapter = CoffeeShopAdapter(listOf(), this::onCoffeeShopClick)
 
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -59,5 +61,11 @@ class HomeActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, fragment)
             .commit()
+    }
+
+    private fun onCoffeeShopClick(coffeeShop: LocalCoffeeShop) {
+        val intent = Intent(this, CoffeeShopDetailActivity::class.java)
+        intent.putExtra("coffeeShopID", coffeeShop.id)
+        startActivity(intent)
     }
 }

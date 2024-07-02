@@ -8,16 +8,18 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coffeecompass.R
-import com.example.coffeecompass.model.CoffeeShop
+import com.example.coffeecompass.model.LocalCoffeeShop
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 
-class CoffeeShopAdapter(private var coffeeShops: List<CoffeeShop>) :
-    RecyclerView.Adapter<CoffeeShopAdapter.CoffeeShopViewHolder>() {
+class CoffeeShopAdapter(
+    private var coffeeShops: List<LocalCoffeeShop>,
+    private val onCoffeeShopClick: (LocalCoffeeShop) -> Unit
+) : RecyclerView.Adapter<CoffeeShopAdapter.CoffeeShopViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CoffeeShopViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_coffee_shop, parent, false)
-        return CoffeeShopViewHolder(itemView)
+        return CoffeeShopViewHolder(itemView, onCoffeeShopClick)
     }
 
     override fun onBindViewHolder(holder: CoffeeShopViewHolder, position: Int) {
@@ -29,18 +31,21 @@ class CoffeeShopAdapter(private var coffeeShops: List<CoffeeShop>) :
         return coffeeShops.size
     }
 
-    fun updateData(newCoffeeShops: List<CoffeeShop>) {
+    fun updateData(newCoffeeShops: List<LocalCoffeeShop>) {
         coffeeShops = newCoffeeShops
         notifyDataSetChanged()
     }
 
-    class CoffeeShopViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class CoffeeShopViewHolder(
+        itemView: View,
+        private val onCoffeeShopClick: (LocalCoffeeShop) -> Unit
+    ) : RecyclerView.ViewHolder(itemView) {
         private val imageView: ImageView = itemView.findViewById(R.id.coffeeShopImageView)
         private val nameTextView: TextView = itemView.findViewById(R.id.coffeeShopNameTextView)
         private val addressTextView: TextView = itemView.findViewById(R.id.coffeeShopAddressTextView)
         private val rateTextView: TextView = itemView.findViewById(R.id.coffeeShopRateTextView)
 
-        fun bind(coffeeShop: CoffeeShop) {
+        fun bind(coffeeShop: LocalCoffeeShop) {
             nameTextView.text = coffeeShop.name
             addressTextView.text = coffeeShop.address
             rateTextView.text = coffeeShop.rate.toString()
@@ -63,6 +68,10 @@ class CoffeeShopAdapter(private var coffeeShops: List<CoffeeShop>) :
                     })
             } else {
                 imageView.setImageResource(R.drawable.ic_coffee_shop_placeholder)
+            }
+
+            itemView.setOnClickListener {
+                onCoffeeShopClick(coffeeShop)
             }
         }
     }
