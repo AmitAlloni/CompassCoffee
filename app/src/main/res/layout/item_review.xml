@@ -31,7 +31,6 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:layout_marginStart="4dp"
-                android:layout_marginRight="4dp"
                 android:layout_gravity="center_vertical"/>
 
             <ImageView
@@ -39,6 +38,7 @@
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:src="@drawable/ic_star"
+                android:layout_marginLeft="4dp"
                 android:layout_gravity="center_vertical" />
         </LinearLayout>
     </RelativeLayout>
