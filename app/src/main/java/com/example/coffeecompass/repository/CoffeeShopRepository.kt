@@ -5,9 +5,7 @@ import androidx.lifecycle.LiveData
 import com.example.coffeecompass.room.AppDatabase
 import com.example.coffeecompass.model.CloudCoffeeShop
 import com.example.coffeecompass.model.LocalCoffeeShop
-import com.example.coffeecompass.model.Product
 import com.example.coffeecompass.util.convertToLocalCoffeeShops
-import com.example.coffeecompass.util.mockProducts
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
@@ -22,47 +20,41 @@ class CoffeeShopRepository(private val localDb: AppDatabase) {
         try {
             val result = firestore.collection("coffeeShops").get().await()
             for (document in result) {
+                Log.d("CoffeeShopRepository", "Document ID: ${document.id}, Data: ${document.data}")
                 val coffeeShop = document.toObject(CloudCoffeeShop::class.java)
                 coffeeShops.add(coffeeShop)
             }
+            Log.d("CoffeeShopRepository", "Fetched ${coffeeShops.size} coffee shops from Firestore")
         } catch (e: Exception) {
             Log.e("CoffeeShopRepository", "Error fetching from Firestore", e)
         }
-        //insertProducts(mockProducts)
         return coffeeShops
     }
 
     private suspend fun insertAllCoffeeShopsToLocalDb(coffeeShops: List<LocalCoffeeShop>) {
         withContext(Dispatchers.IO) {
             try {
-                localDb.coffeeShopDao().insertAll(coffeeShops)
+                if (coffeeShops.isNotEmpty()) {
+                    localDb.coffeeShopDao().insertAll(coffeeShops)
+                    Log.d("CoffeeShopRepository", "Inserted ${coffeeShops.size} coffee shops into local DB")
+                } else {
+                    Log.w("CoffeeShopRepository", "No coffee shops to insert into local DB")
+                }
             } catch (e: Exception) {
                 Log.e("CoffeeShopRepository", "Error inserting to local DB", e)
             }
         }
     }
 
-    // Function to insert products into Firestore
-    private suspend fun insertProducts(products: List<Product>) {
-        withContext(Dispatchers.IO) {
-            val db = FirebaseFirestore.getInstance()
-            val productsCollection = db.collection("products")
-            for (product in products) {
-                productsCollection.document(product.id).set(product)
-            }
-        }
-    }
-
     suspend fun synchronizeCoffeeShops() {
         try {
-            // Fetch from Firestore
             val cloudCoffeeShops = fetchAllCoffeeShopsFromFirestore()
-
-            // Convert to local coffee shops using the converter function
-            val localCoffeeShops = convertToLocalCoffeeShops(cloudCoffeeShops)
-
-            // Insert into local DB
-            insertAllCoffeeShopsToLocalDb(localCoffeeShops)
+            if (cloudCoffeeShops.isNotEmpty()) {
+                val localCoffeeShops = convertToLocalCoffeeShops(cloudCoffeeShops)
+                insertAllCoffeeShopsToLocalDb(localCoffeeShops)
+            } else {
+                Log.w("CoffeeShopRepository", "No coffee shops fetched from Firestore")
+            }
         } catch (e: Exception) {
             Log.e("CoffeeShopRepository", "Error synchronizing coffee shops", e)
         }

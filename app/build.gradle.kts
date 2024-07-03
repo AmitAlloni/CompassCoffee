@@ -79,6 +79,9 @@ dependencies {
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.jetbrains.kotlin.android.extensions.runtime)
+    implementation(libs.firebase.auth)
+    implementation(libs.play.services.auth)
+    implementation(platform(libs.firebase.bom))
 
     annotationProcessor(libs.compiler)
     kapt(libs.androidx.room.compiler)

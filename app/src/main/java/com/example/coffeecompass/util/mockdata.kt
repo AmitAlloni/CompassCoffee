@@ -22,5 +22,5 @@ fun generateUniqueId(): String {
     return UUID.randomUUID().toString()
 }
 
-val coffeeShop = CloudCoffeeShop(generateUniqueId(), "Coffee Shop Name", "Address", 4.5f, "https://firebasestorage.googleapis.com/v0/b/coffeecompass-1700d.appspot.com/o/ic_coffee_shops_color.png?alt=media&token=10dd11f0-e683-4b24-8539-6c360b81d31b", arrayListOf(), arrayListOf())
+val coffeeShop = CloudCoffeeShop(generateUniqueId(), "Coffee Shop Name2", "Address2", 4.5f, "https://firebasestorage.googleapis.com/v0/b/coffeecompass-1700d.appspot.com/o/ic_coffee_shops_color.png?alt=media&token=10dd11f0-e683-4b24-8539-6c360b81d31b", arrayListOf(), arrayListOf())
 

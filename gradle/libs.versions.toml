@@ -1,6 +1,8 @@
 [versions]
 agp = "8.5.0"
 compiler = "1.1.1"
+firebaseAuth = "23.0.0"
+firebaseBom = "33.1.1"
 gson = "2.11.0"
 kotlin = "1.9.0"
 coreKtx = "1.10.1"
@@ -21,6 +23,7 @@ firebaseFirestoreKtx = "25.0.0"
 firebaseStorage = "21.0.0"
 materialVersion = "1.5.0"
 picasso = "2.8"
+playServicesAuth = "21.2.0"
 roomCompiler = "2.6.1"
 roomKtx = "2.6.1"
 roomRuntime = "2.6.1"
@@ -33,6 +36,8 @@ androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref =
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomKtx" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
 compiler = { module = "android.arch.persistence.room:compiler", version.ref = "compiler" }
+firebase-auth = { module = "com.google.firebase:firebase-auth", version.ref = "firebaseAuth" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 google-material = { module = "com.google.android.material:material", version.ref = "materialVersion" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 jetbrains-kotlin-android-extensions-runtime = { module = "org.jetbrains.kotlin:kotlin-android-extensions-runtime", version.ref = "kotlinAndroidExtensionsRuntimeVersion" }
@@ -57,6 +62,7 @@ kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutine
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
 picasso = { module = "com.squareup.picasso:picasso", version.ref = "picasso" }
 androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
+play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "playServicesAuth" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

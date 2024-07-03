@@ -5,21 +5,23 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.example.coffeecompass.model.CloudCoffeeShop
+import com.example.coffeecompass.room.AppDatabase
 import com.example.coffeecompass.model.LocalCoffeeShop
 import com.example.coffeecompass.model.Review
 import com.example.coffeecompass.repository.CoffeeShopRepository
 import com.example.coffeecompass.repository.ReviewsRepository
-import com.example.coffeecompass.room.AppDatabase
 import kotlinx.coroutines.launch
 
 class CoffeeShopViewModel(application: Application) : AndroidViewModel(application) {
-    private val reviewsRepository = ReviewsRepository()
+
     private val repository: CoffeeShopRepository
+    private val allCoffeeShops: LiveData<List<LocalCoffeeShop>>
+    private val reviewsRepository = ReviewsRepository()
 
     init {
-        val localDb = AppDatabase.getDatabase(application)
-        repository = CoffeeShopRepository(localDb)
-        synchronizeCoffeeShops()
+        val database = AppDatabase.getDatabase(application)
+        repository = CoffeeShopRepository(database)
+        allCoffeeShops = repository.getAllCoffeeShops()
     }
 
     private fun synchronizeCoffeeShops() = viewModelScope.launch {
@@ -35,6 +37,7 @@ class CoffeeShopViewModel(application: Application) : AndroidViewModel(applicati
     }
 
     fun getReviewsByCoffeeShopId(id: String): LiveData<List<Review>> {
+
         return reviewsRepository.getReviewsByCoffeeShopId(id)
     }
 
