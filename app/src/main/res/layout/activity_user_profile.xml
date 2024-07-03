@@ -27,24 +27,50 @@
         android:background="@drawable/circle_background"
         android:src="@drawable/ic_profile"/>
 
-    <!-- Your Reviews Title -->
-    <TextView
-        android:id="@+id/reviewsLabelTextView"
-        android:layout_width="wrap_content"
+    <!-- Your Reviews Title and Add Review Button -->
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/your_reviews"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:layout_marginTop="16dp"/>
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp">
+
+        <TextView
+            android:id="@+id/reviewsLabelTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/your_reviews"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:layout_gravity="start"/>
+
+        <Button
+            android:id="@+id/buttonAddReview"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/ic_add"
+            android:contentDescription="@string/add_review"
+            android:layout_gravity="end"
+            android:layout_marginStart="190dp"/>
+    </LinearLayout>
+
+    <!-- No Reviews Text -->
+    <TextView
+        android:id="@+id/textViewNoReviews"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/you_have_no_reviews_click_here_to_add_a_review"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:layout_marginTop="16dp"
+        android:visibility="gone"/>
 
     <!-- Reviews RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/reviewsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:orientation="horizontal"
-        android:horizontalSpacing="8dp"/>
+        android:layout_marginTop="8dp"/>
 
     <!-- Followers Section -->
     <TextView
@@ -69,13 +95,13 @@
         android:id="@+id/buttonUserSettings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="16dp"
         android:background="@color/coffee_brown"
         android:drawableEnd="@drawable/ic_settings_small"
         android:drawablePadding="12dp"
         android:text="@string/user_settings"
         android:textSize="18sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"/>
 
 </LinearLayout>

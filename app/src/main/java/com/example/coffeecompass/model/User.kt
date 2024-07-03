@@ -8,7 +8,7 @@ data class User(
     val profileImageUrl: String = "",
     val followers: ArrayList<String> = arrayListOf(),
     val following: ArrayList<String> = arrayListOf(),
-    val reviews: ArrayList<Review> = arrayListOf(),
+    val reviews: ArrayList<String> = arrayListOf(),
     val userSettings: UserSettings = UserSettings()
 )
 

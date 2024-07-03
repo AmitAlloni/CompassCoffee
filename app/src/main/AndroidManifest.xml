@@ -37,6 +37,7 @@
         <activity android:name=".activity.SignupActivity" />
         <activity android:name=".activity.UserProfileActivity" />
         <activity android:name=".activity.UserSettingsActivity" />
+        <activity android:name=".activity.AddReviewActivity" />
     </application>
 
 </manifest>

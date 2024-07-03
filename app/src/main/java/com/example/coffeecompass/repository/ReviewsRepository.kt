@@ -41,4 +41,20 @@ class ReviewsRepository {
             emit(emptyList<Review>())
         }
     }
+
+    suspend fun getReviewsByIds(reviewIds: List<String>): List<Review> {
+        return fetchAllReviewsFromFirestore(reviewIds)
+    }
+
+    fun addReview(review: Review, callback: (Boolean) -> Unit) {
+        firestore.collection("reviews").document(review.id)
+            .set(review)
+            .addOnSuccessListener {
+                callback(true)
+            }
+            .addOnFailureListener { e ->
+                Log.e("ReviewsRepository", "Error adding review", e)
+                callback(false)
+            }
+    }
 }

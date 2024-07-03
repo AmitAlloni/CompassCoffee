@@ -26,4 +26,11 @@
     <string name="coffee_shop_name">Coffee Shop Name</string>
     <string name="rating">Rating</string>
     <string name="comment">Comment</string>
+    <string name="selected_image">Selected Image</string>
+    <string name="write_your_review_here">Write your review here...</string>
+    <string name="upload_image">Upload image</string>
+    <string name="submit_review">Submit Review</string>
+    <string name="select_coffee_shop">Select Coffee Shop</string>
+    <string name="add_review">Add Review</string>
+    <string name="you_have_no_reviews_click_here_to_add_a_review">You have no reviews. Click here to add a review.</string>
 </resources>

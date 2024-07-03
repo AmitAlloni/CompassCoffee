@@ -32,8 +32,8 @@ class SignupActivity : AppCompatActivity() {
     private var selectedImageUri: Uri? = null
 
     companion object {
-        private const val PICK_IMAGE_REQUEST = 1
-        private const val REQUEST_IMAGE_CAPTURE = 2
+        const val PICK_IMAGE_REQUEST = 1
+        const val REQUEST_IMAGE_CAPTURE = 2
         private const val PERMISSION_REQUEST_CODE = 100
     }
 
