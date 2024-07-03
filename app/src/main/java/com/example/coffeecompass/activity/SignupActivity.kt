@@ -8,8 +8,11 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ProgressBar
+import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -20,15 +23,13 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import java.io.ByteArrayOutputStream
-//Todo: add spinner while set up  account
-//Todo: save google account user name and photo to users.
 
 class SignupActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
     private lateinit var storage: FirebaseStorage
-
+    private lateinit var progressBar: ProgressBar
     private var selectedImageUri: Uri? = null
 
     companion object {
@@ -49,7 +50,10 @@ class SignupActivity : AppCompatActivity() {
         val passwordEditText = findViewById<EditText>(R.id.editTextPassword)
         val userNameEditText = findViewById<EditText>(R.id.editTextUserName)
         val selectImageButton = findViewById<Button>(R.id.buttonSelectImage)
+        val flavorRadioGroup = findViewById<RadioGroup>(R.id.flavorRadioGroup)
+        val priceRadioGroup = findViewById<RadioGroup>(R.id.priceRadioGroup)
         val signUpButton = findViewById<Button>(R.id.buttonSignUp)
+        progressBar = findViewById<ProgressBar>(R.id.progressBar)
 
         selectImageButton.setOnClickListener {
             showImagePickerOptions()
@@ -59,10 +63,24 @@ class SignupActivity : AppCompatActivity() {
             val email = emailEditText.text.toString().trim()
             val password = passwordEditText.text.toString().trim()
             val userName = userNameEditText.text.toString().trim()
+            val flavor = when (flavorRadioGroup.checkedRadioButtonId) {
+                R.id.flavorStrong -> "Strong"
+                R.id.flavorMild -> "Mild"
+                R.id.flavorDecaf -> "Decaf"
+                else -> ""
+            }
+            val price = when (priceRadioGroup.checkedRadioButtonId) {
+                R.id.price1 -> 1
+                R.id.price2 -> 2
+                R.id.price3 -> 3
+                R.id.price4 -> 4
+                R.id.price5 -> 5
+                else -> 0
+            }
 
             if (email.isNotEmpty() && password.isNotEmpty() && userName.isNotEmpty() && selectedImageUri != null) {
-                uploadImageAndCreateUser(email, password, userName)
-                //Todo: handle input exception for email and password.
+                progressBar.visibility = View.VISIBLE
+                uploadImageAndCreateUser(email, password, userName, flavor, price)
             } else {
                 Toast.makeText(this, "Please fill all fields and select an image", Toast.LENGTH_SHORT).show()
             }
@@ -101,7 +119,7 @@ class SignupActivity : AppCompatActivity() {
         val options = arrayOf("Take Photo", "Choose from Gallery")
         val builder = android.app.AlertDialog.Builder(this)
         builder.setTitle("Select Profile Image")
-        builder.setItems(options) { dialog, which ->
+        builder.setItems(options) { _, which ->
             when (which) {
                 0 -> takePhotoFromCamera()
                 1 -> chooseImageFromGallery()
@@ -156,35 +174,38 @@ class SignupActivity : AppCompatActivity() {
         return Uri.parse(path)
     }
 
-    private fun uploadImageAndCreateUser(email: String, password: String, userName: String) {
+    private fun uploadImageAndCreateUser(email: String, password: String, userName: String, flavor: String, price: Int) {
         selectedImageUri?.let { uri ->
             val storageRef = storage.reference.child("profileImages/${auth.uid}.jpg")
             storageRef.putFile(uri)
                 .addOnSuccessListener {
                     storageRef.downloadUrl.addOnSuccessListener { downloadUri ->
-                        createUser(email, password, userName, downloadUri.toString())
+                        createUser(email, password, userName, downloadUri.toString(), flavor, price)
                     }
                 }
                 .addOnFailureListener {
+                    progressBar.visibility = View.GONE
                     Toast.makeText(this, "Image upload failed", Toast.LENGTH_SHORT).show()
                 }
         }
     }
 
-    private fun createUser(email: String, password: String, userName: String, profileImageUrl: String) {
+    private fun createUser(email: String, password: String, userName: String, profileImageUrl: String, flavor: String, price: Int) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
+                progressBar.visibility = View.GONE
                 if (task.isSuccessful) {
                     val user = auth.currentUser
                     user?.let {
                         val uid = it.uid
+                        val userSettings = UserSettings(flavor = flavor, price = price)
                         val userData = hashMapOf(
                             "userName" to userName,
                             "profileImageUrl" to profileImageUrl,
                             "followers" to arrayListOf<String>(),
                             "following" to arrayListOf<String>(),
                             "reviews" to arrayListOf<String>(),
-                            "userSettings" to UserSettings()
+                            "userSettings" to userSettings
                         )
 
                         firestore.collection("users").document(uid)

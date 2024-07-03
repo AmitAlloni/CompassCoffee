@@ -12,13 +12,9 @@ class ReviewForUserAdapter(private val reviews: List<Review>, private val showVi
 
     private var onItemClickListener: ((Review) -> Unit)? = null
 
-    fun setOnItemClickListener(listener: (Review) -> Unit) {
-        onItemClickListener = listener
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReviewForUserAdapterHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_review_for_user, parent, false)
-        return ReviewForUserAdapterHolder(view, onItemClickListener)
+        return ReviewForUserAdapterHolder(view)
     }
 
     override fun onBindViewHolder(holder: ReviewForUserAdapterHolder, position: Int) {
@@ -46,20 +42,18 @@ class ReviewForUserAdapter(private val reviews: List<Review>, private val showVi
         return if (showViewMore && reviews.size > 3) 4 else reviews.size
     }
 
-    class ReviewForUserAdapterHolder(itemView: View, private val onItemClickListener: ((Review) -> Unit)?) : RecyclerView.ViewHolder(itemView) {
+    fun setOnItemClickListener(listener: (Review) -> Unit) {
+        onItemClickListener = listener
+    }
+
+    class ReviewForUserAdapterHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val coffeeShopTextView: TextView = itemView.findViewById(R.id.textViewCoffeeShop)
         val ratingTextView: TextView = itemView.findViewById(R.id.textViewRating)
         val priceTextView: TextView = itemView.findViewById(R.id.textViewPrice)
         val flavorTextView: TextView = itemView.findViewById(R.id.textViewFlavor)
         val commentTextView: TextView = itemView.findViewById(R.id.textViewComment)
-
-        init {
-            itemView.setOnClickListener {
-                val review = itemView.tag as? Review
-                review?.let {
-                    onItemClickListener?.invoke(it)
-                }
-            }
-        }
     }
 }
+
+
+

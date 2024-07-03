@@ -38,6 +38,8 @@
         <activity android:name=".activity.UserProfileActivity" />
         <activity android:name=".activity.UserSettingsActivity" />
         <activity android:name=".activity.AddReviewActivity" />
+        <activity android:name=".activity.ViewReviewActivity" />
+        <activity android:name=".activity.UpdatePasswordActivity" />
     </application>
 
 </manifest>

@@ -13,11 +13,7 @@ data class User(
 )
 
 data class UserSettings(
-    val flavor: String = "Strong",
-    val price: String = "$$",
-    val location: String = "My location",
-    val distance: Float = 3.0f,
-    val messages: Boolean = true,
-    val emailNotifications: Boolean = true,
-    val pushNotifications: Boolean = true
+    val flavor: String = "",
+    val price: Int = 0,
+
 )

@@ -128,6 +128,10 @@ class UserProfileActivity : AppCompatActivity() {
                     if (review.id == "add_review") {
                         val intent = Intent(this@UserProfileActivity, AddReviewActivity::class.java)
                         startActivity(intent)
+                    } else {
+                        val intent = Intent(this@UserProfileActivity, ViewReviewActivity::class.java)
+                        intent.putExtra("REVIEW_ID", review.id)
+                        startActivity(intent)
                     }
                 }
             }

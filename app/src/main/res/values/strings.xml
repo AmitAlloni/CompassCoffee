@@ -44,4 +44,8 @@
     <string name="three_dollars">$$$</string>
     <string name="four_dollars">$$$$</string>
     <string name="five_dollars">$$$$$</string>
+    <string name="user_preferences">User Preferences</string>
+    <string name="update_picture">Update Picture</string>
+    <string name="update_password">Update Password</string>
+    <string name="logout">Logout</string>
 </resources>

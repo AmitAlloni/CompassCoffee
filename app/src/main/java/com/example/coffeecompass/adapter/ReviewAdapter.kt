@@ -11,7 +11,6 @@ import com.example.coffeecompass.model.Review
 class ReviewAdapter(private var reviews: List<Review>) :
     RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>() {
     //Todo: make a reviews layout
-    //Todo: make a review layout with edit review.
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReviewViewHolder {
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_review, parent, false)
