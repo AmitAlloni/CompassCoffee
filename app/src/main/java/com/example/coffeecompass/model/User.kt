@@ -1,8 +1,19 @@
 package com.example.coffeecompass.model
-import com.google.firebase.firestore.DocumentReference
+
 
 data class User(
-    val id: String = "",
-    val name: String = "",
-    val reviews: List<String > = emptyList()
+    val uid: String = "",
+    val userName: String = "",
+    val email: String = "",
+    val profileImageUrl: String = "",
+    val followers: ArrayList<String> = arrayListOf(),
+    val following: ArrayList<String> = arrayListOf(),
+    val reviews: ArrayList<String> = arrayListOf(),
+    val userSettings: UserSettings = UserSettings()
+)
+
+data class UserSettings(
+    val flavor: String = "",
+    val price: Int = 0,
+
 )

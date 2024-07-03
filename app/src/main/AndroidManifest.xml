@@ -2,7 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:name=".CoffeeShopApplication"
@@ -15,19 +22,24 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CoffeeCompass"
         tools:targetApi="31">
-
-        <activity
-            android:name=".activity.SplashActivity"
-            android:exported="true"
-            android:theme="@style/Theme.CoffeeCompass.Splash">
+        <activity android:name=".activity.SplashActivity"
+            android:theme="@style/Theme.CoffeeCompass.Splash"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity android:name=".activity.MainActivity" />
         <activity android:name=".activity.HomeActivity" />
         <activity android:name=".activity.CoffeeShopDetailActivity" />
+        <activity android:name=".activity.LoginActivity" />
+        <activity android:name=".activity.SignupActivity" />
+        <activity android:name=".activity.UserProfileActivity" />
+        <activity android:name=".activity.UserSettingsActivity" />
+        <activity android:name=".activity.AddReviewActivity" />
+        <activity android:name=".activity.ViewReviewActivity" />
+        <activity android:name=".activity.UpdatePasswordActivity" />
     </application>
 
 </manifest>

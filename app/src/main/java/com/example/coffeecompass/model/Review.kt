@@ -9,7 +9,7 @@ data class Review(
     val coffeeShop: String = "",
     val date: Timestamp? = null,
     val rate: Int = 0,
-    val flavor: Int = 0,
+    val flavor: String = "",
     val price: Int = 0,
     val photo: String = "",
     val body: String = ""

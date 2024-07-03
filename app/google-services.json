@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "1071819899595",
+    "firebase_url": "https://coffeecompass-1700d-default-rtdb.firebaseio.com",
     "project_id": "coffeecompass-1700d",
     "storage_bucket": "coffeecompass-1700d.appspot.com"
   },
@@ -12,7 +13,20 @@
           "package_name": "com.example.coffeecompass"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1071819899595-2ueomivfi2vvr1tptc473ikp5h7ia43a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.coffeecompass",
+            "certificate_hash": "acc02c18aa4b1a33a3d1eca4dc633e214ab82dee"
+          }
+        },
+        {
+          "client_id": "1071819899595-dl02fncq41rdm312mpe34l30918palud.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBvqO9apCS-DK4Olk0KW7y1Thtz2vcOcKE"
@@ -20,7 +34,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1071819899595-dl02fncq41rdm312mpe34l30918palud.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
