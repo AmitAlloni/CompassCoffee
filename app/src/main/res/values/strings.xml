@@ -37,4 +37,11 @@
     <string name="strong">Strong</string>
     <string name="mild">Mild</string>
     <string name="decaf">Decaf</string>
+    <string name="saving_review">Saving review...</string>
+    <string name="price">Price</string>
+    <string name="one_dollar">$</string>
+    <string name="two_dollars">$$</string>
+    <string name="three_dollars">$$$</string>
+    <string name="four_dollars">$$$$</string>
+    <string name="five_dollars">$$$$$</string>
 </resources>

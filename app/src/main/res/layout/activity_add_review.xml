@@ -26,7 +26,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Price"
+        android:text="@string/price"
         android:textSize="16sp"
         android:layout_marginTop="16dp"/>
 
@@ -41,31 +41,31 @@
             android:id="@+id/price1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="$" />
+            android:text="@string/one_dollar" />
 
         <RadioButton
             android:id="@+id/price2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="$$" />
+            android:text="@string/two_dollars" />
 
         <RadioButton
             android:id="@+id/price3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="$$$" />
+            android:text="@string/three_dollars" />
 
         <RadioButton
             android:id="@+id/price4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="$$$$" />
+            android:text="@string/four_dollars" />
 
         <RadioButton
             android:id="@+id/price5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="$$$$$" />
+            android:text="@string/five_dollars" />
     </RadioGroup>
 
     <TextView
@@ -112,6 +112,7 @@
         android:id="@+id/imageViewSelectedImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp" />
 
     <Button
@@ -129,5 +130,22 @@
         android:text="@string/submit_review"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:id="@+id/textViewSavingReview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/saving_review"
+        android:visibility="gone"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="8dp"/>
 
 </LinearLayout>

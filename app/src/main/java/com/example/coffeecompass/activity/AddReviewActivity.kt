@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.coffeecompass.R
@@ -32,6 +33,8 @@ class AddReviewActivity : AppCompatActivity() {
     private lateinit var selectedImageView: ImageView
     private lateinit var selectImageButton: Button
     private lateinit var submitReviewButton: Button
+    private lateinit var progressBar: ProgressBar
+    private lateinit var textViewSavingReview: TextView
 
     private var selectedImageUri: Uri? = null
     private var selectedCoffeeShopName: String? = null
@@ -58,6 +61,8 @@ class AddReviewActivity : AppCompatActivity() {
         selectedImageView = findViewById(R.id.imageViewSelectedImage)
         selectImageButton = findViewById(R.id.buttonSelectImage)
         submitReviewButton = findViewById(R.id.buttonSubmitReview)
+        progressBar = findViewById(R.id.progressBar)
+        textViewSavingReview = findViewById(R.id.textViewSavingReview)
 
         selectImageButton.setOnClickListener {
             showImagePickerOptions()
@@ -189,11 +194,24 @@ class AddReviewActivity : AppCompatActivity() {
             return
         }
 
+        showLoading(true)
         submitReview(selectedCoffeeShopName!!, rating.toInt(), reviewBody, price, flavor)
     }
 
     private fun showMessage(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        if (isLoading) {
+            progressBar.visibility = View.VISIBLE
+            textViewSavingReview.visibility = View.VISIBLE
+            submitReviewButton.isEnabled = false
+        } else {
+            progressBar.visibility = View.GONE
+            textViewSavingReview.visibility = View.GONE
+            submitReviewButton.isEnabled = true
+        }
     }
 
     private fun submitReview(coffeeShopName: String, rating: Int, reviewBody: String, price: Int, flavor: String) {
@@ -219,14 +237,17 @@ class AddReviewActivity : AppCompatActivity() {
                         reviewsRepository.addReview(review) { success ->
                             if (success) {
                                 updateUserReviews(reviewId)
+                                updateCoffeeShopReviews(coffeeShopName, reviewId)
                             } else {
                                 showMessage("Error submitting review")
+                                showLoading(false)
                             }
                         }
                     }
                 }
                 .addOnFailureListener {
                     showMessage("Error uploading image")
+                    showLoading(false)
                 }
         }
     }
@@ -240,6 +261,28 @@ class AddReviewActivity : AppCompatActivity() {
             }
             .addOnFailureListener {
                 showMessage("Error updating user reviews")
+                showLoading(false)
+            }
+    }
+
+    private fun updateCoffeeShopReviews(coffeeShopName: String, reviewId: String) {
+        firestore.collection("coffeeShops")
+            .whereEqualTo("name", coffeeShopName)
+            .get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    val coffeeShopId = document.id
+                    firestore.collection("coffeeShops").document(coffeeShopId)
+                        .update("reviews", com.google.firebase.firestore.FieldValue.arrayUnion(reviewId))
+                        .addOnFailureListener {
+                            showMessage("Error updating coffee shop reviews")
+                            showLoading(false)
+                        }
+                }
+            }
+            .addOnFailureListener {
+                showMessage("Error finding coffee shop")
+                showLoading(false)
             }
     }
 }

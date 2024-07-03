@@ -33,6 +33,8 @@ class ReviewForUserAdapter(private val reviews: List<Review>, private val showVi
             val review = reviews[position]
             holder.coffeeShopTextView.text = review.coffeeShop
             holder.ratingTextView.text = review.rate.toString()
+            holder.priceTextView.text = review.price.toString()
+            holder.flavorTextView.text = review.flavor
             holder.commentTextView.text = review.body
             holder.itemView.setOnClickListener {
                 onItemClickListener?.invoke(review)
@@ -47,6 +49,8 @@ class ReviewForUserAdapter(private val reviews: List<Review>, private val showVi
     class ReviewForUserAdapterHolder(itemView: View, private val onItemClickListener: ((Review) -> Unit)?) : RecyclerView.ViewHolder(itemView) {
         val coffeeShopTextView: TextView = itemView.findViewById(R.id.textViewCoffeeShop)
         val ratingTextView: TextView = itemView.findViewById(R.id.textViewRating)
+        val priceTextView: TextView = itemView.findViewById(R.id.textViewPrice)
+        val flavorTextView: TextView = itemView.findViewById(R.id.textViewFlavor)
         val commentTextView: TextView = itemView.findViewById(R.id.textViewComment)
 
         init {
