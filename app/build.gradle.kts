@@ -59,7 +59,6 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
     implementation(libs.jetbrains.kotlin.android.extensions.runtime)
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
@@ -81,9 +80,11 @@ dependencies {
     implementation(libs.jetbrains.kotlin.android.extensions.runtime)
     implementation(libs.firebase.auth)
     implementation(libs.play.services.auth)
+    implementation(libs.circleimageview)
     implementation(platform(libs.firebase.bom))
+    implementation(platform(libs.androidx.compose.bom))
 
-    annotationProcessor(libs.compiler)
+    kapt(libs.compiler)
     kapt(libs.androidx.room.compiler)
 
     testImplementation(libs.junit)

@@ -6,52 +6,74 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <ImageView
+    <!-- Greeting Title -->
+    <TextView
+        android:id="@+id/textViewGreeting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hi,"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_gravity="start"/>
+
+    <!-- Profile Image -->
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imageViewProfile"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_gravity="center"
-        android:src="@drawable/ic_profile" />
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_gravity="end"
+        android:layout_marginTop="-48dp"
+        android:scaleType="centerCrop"
+        android:background="@drawable/circle_background"
+        android:src="@drawable/ic_profile"/>
 
+    <!-- Your Reviews Title -->
     <TextView
-        android:id="@+id/textViewUsername"
+        android:id="@+id/reviewsLabelTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/username"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+        android:text="@string/your_reviews"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp"/>
 
-    <TextView
-        android:id="@+id/textViewReviews"
-        android:layout_width="wrap_content"
+    <!-- Reviews RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/reviewsRecyclerView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/reviews"
-        android:textSize="16sp" />
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        android:horizontalSpacing="8dp"/>
 
-    <!-- Add RecyclerView or ListView for reviews -->
-
+    <!-- Followers Section -->
     <TextView
         android:id="@+id/textViewFollowers"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
         android:text="@string/followers_0"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:layout_marginTop="16dp"/>
 
+    <!-- Following Section -->
     <TextView
         android:id="@+id/textViewFollowing"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
         android:text="@string/following_0"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:layout_marginTop="8dp"/>
 
+    <!-- User Settings Button -->
     <Button
-        android:id="@+id/buttonEditProfile"
+        android:id="@+id/buttonUserSettings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/edit_profile" />
+        android:layout_marginTop="16dp"
+        android:background="@android:color/transparent"
+        android:drawableLeft="@drawable/ic_settings"
+        android:text="@string/user_settings"
+        android:textSize="18sp"
+        android:textStyle="bold"/>
 </LinearLayout>

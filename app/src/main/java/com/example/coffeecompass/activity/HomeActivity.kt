@@ -32,7 +32,8 @@ class HomeActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-
+        //Todo: search by name coffee shops
+        //Todo: search by name users
         coffeeShopAdapter = CoffeeShopAdapter(listOf()) { coffeeShop ->
             val intent = Intent(this, CoffeeShopDetailActivity::class.java).apply {
                 putExtra("coffeeShopID", coffeeShop.id)

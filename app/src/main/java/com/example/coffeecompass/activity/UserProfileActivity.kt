@@ -6,15 +6,22 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.coffeecompass.R
 import com.example.coffeecompass.model.User
+import com.example.coffeecompass.model.Review
+import com.example.coffeecompass.adapter.ReviewForUserAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.squareup.picasso.Picasso
 
 class UserProfileActivity : AppCompatActivity() {
 
     private lateinit var firestore: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
+    private lateinit var reviewForUserAdapter: ReviewForUserAdapter
+    private lateinit var reviewsRecyclerView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,13 +31,11 @@ class UserProfileActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
 
         val profileImageView = findViewById<ImageView>(R.id.imageViewProfile)
-        //Todo: use function
-        val usernameTextView = findViewById<TextView>(R.id.textViewUsername)
-        val reviewsTextView = findViewById<TextView>(R.id.textViewReviews)
-        //Todo: use function
+        val usernameTextView = findViewById<TextView>(R.id.textViewGreeting)
         val followersTextView = findViewById<TextView>(R.id.textViewFollowers)
         val followingTextView = findViewById<TextView>(R.id.textViewFollowing)
-        val editProfileButton = findViewById<Button>(R.id.buttonEditProfile)
+        val userSettingsButton = findViewById<Button>(R.id.buttonUserSettings)
+        reviewsRecyclerView = findViewById(R.id.reviewsRecyclerView)
 
         val uid = auth.currentUser?.uid
         uid?.let {
@@ -38,18 +43,40 @@ class UserProfileActivity : AppCompatActivity() {
                 .addOnSuccessListener { document ->
                     val user = document.toObject(User::class.java)
                     user?.let { userDetails ->
-                        usernameTextView.text = userDetails.userName
-                        followersTextView.text = "Followers: ${userDetails.followers.size}"
-                        followingTextView.text = "Following: ${userDetails.following.size}"
-
-                        //Todo: Load profile image using a library like Picasso or Glide
-                        // Example: Picasso.get().load(userDetails.profileImageUrl).into(profileImageView)
+                        setUsername(usernameTextView, userDetails.userName)
+                        setFollowersCount(followersTextView, userDetails.followers.size)
+                        setFollowingCount(followingTextView, userDetails.following.size)
+                        loadProfileImage(profileImageView, userDetails.profileImageUrl)
+                        loadUserReviews(userDetails.reviews)
                     }
                 }
         }
 
-        editProfileButton.setOnClickListener {
+        userSettingsButton.setOnClickListener {
             startActivity(Intent(this, UserSettingsActivity::class.java))
         }
+    }
+
+    private fun setUsername(textView: TextView, username: String) {
+        textView.text = "Hi, $username"
+    }
+
+    private fun setFollowersCount(textView: TextView, count: Int) {
+        textView.text = "Followers: $count"
+    }
+
+    private fun setFollowingCount(textView: TextView, count: Int) {
+        textView.text = "Following: $count"
+    }
+
+    private fun loadProfileImage(imageView: ImageView, imageUrl: String) {
+        Picasso.get().load(imageUrl).placeholder(R.drawable.ic_profile).into(imageView)
+    }
+
+    private fun loadUserReviews(reviews: List<Review>) {
+        val limitedReviews = if (reviews.size > 3) reviews.subList(0, 3) else reviews
+        reviewForUserAdapter = ReviewForUserAdapter(limitedReviews, true)
+        reviewsRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        reviewsRecyclerView.adapter = reviewForUserAdapter
     }
 }

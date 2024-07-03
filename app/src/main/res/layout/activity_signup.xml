@@ -9,30 +9,31 @@
         android:id="@+id/editTextEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Email" />
+        android:hint="@string/email" />
 
     <EditText
         android:id="@+id/editTextPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Password"
+        android:hint="@string/password"
         android:inputType="textPassword" />
 
     <EditText
         android:id="@+id/editTextUserName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Username" />
+        android:hint="@string/username" />
 
-    <EditText
-        android:id="@+id/editTextProfileImageUrl"
+    <Button
+        android:id="@+id/buttonSelectImage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Profile Image URL" />
+        android:text="@string/upload_image_profile"/>
 
     <Button
         android:id="@+id/buttonSignUp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Sign Up" />
+        android:text="@string/sign_up" />
+
 </LinearLayout>
