@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".activity.CoffeeShopActivity">
+
+    <!-- Top bar with sorting and search -->
+    <LinearLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <EditText
+            android:id="@+id/searchEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Search by name"
+            android:inputType="text" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/sortByRatingButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sort by Rating" />
+
+            <Button
+                android:id="@+id/sortByReviewsButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="45dp"
+                android:text="Sort by Reviews" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/topBar"
+        android:layout_marginTop="16dp"
+        android:text="Coffee Shops"
+        android:textAppearance="?attr/textAppearanceHeadline6" />
+
+    <!-- RecyclerView for Coffee Shops -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewCoffeeShops"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@id/titleTextView"
+        android:layout_above="@id/bottomNavigationView"
+        android:layout_marginTop="16dp" />
+
+    <!-- Fragment Container -->
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_above="@id/bottomNavigationView"
+        android:layout_below="@id/titleTextView"/>
+
+    <!-- Bottom Navigation Bar -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="?android:attr/windowBackground"
+        app:menu="@menu/bottom_nav_menu"
+        app:itemIconTint="@color/selector_bottom_nav_color"
+        app:itemTextColor="@color/selector_bottom_nav_color"
+        app:itemTextAppearanceActive="@style/TextAppearance.BottomNavigation.Active"
+        app:itemTextAppearanceInactive="@style/TextAppearance.BottomNavigation.Inactive"
+        app:labelVisibilityMode="labeled" />
+</RelativeLayout>

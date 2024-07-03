@@ -1,47 +1,57 @@
 package com.example.coffeecompass.viewmodel
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.coffeecompass.model.CloudCoffeeShop
-import com.example.coffeecompass.room.AppDatabase
-import com.example.coffeecompass.model.LocalCoffeeShop
 import com.example.coffeecompass.model.Review
 import com.example.coffeecompass.repository.CoffeeShopRepository
 import com.example.coffeecompass.repository.ReviewsRepository
 import kotlinx.coroutines.launch
 
-class CoffeeShopViewModel(application: Application) : AndroidViewModel(application) {
+class CoffeeShopViewModel : ViewModel() {
 
-    private val repository: CoffeeShopRepository
-    private val allCoffeeShops: LiveData<List<LocalCoffeeShop>>
-    private val reviewsRepository = ReviewsRepository()
+    private val coffeeShopRepository = CoffeeShopRepository()
+    private val reviewRepository = ReviewsRepository()
+    private val _coffeeShops = MutableLiveData<List<CloudCoffeeShop>>()
+    val coffeeShops: LiveData<List<CloudCoffeeShop>> get() = _coffeeShops
+
+    private val _selectedCoffeeShop = MutableLiveData<CloudCoffeeShop?>()
+    val selectedCoffeeShop: LiveData<CloudCoffeeShop?> get() = _selectedCoffeeShop
+
+    private val _reviews = MutableLiveData<List<Review>>()
+    val reviews: LiveData<List<Review>> get() = _reviews
 
     init {
-        val database = AppDatabase.getDatabase(application)
-        repository = CoffeeShopRepository(database)
-        allCoffeeShops = repository.getAllCoffeeShops()
+        fetchCoffeeShops()
     }
 
-    private fun synchronizeCoffeeShops() = viewModelScope.launch {
-        repository.synchronizeCoffeeShops()
+    private fun fetchCoffeeShops() {
+        viewModelScope.launch {
+            val coffeeShops = coffeeShopRepository.fetchAllCoffeeShops()
+            _coffeeShops.postValue(coffeeShops)
+        }
     }
 
-    fun getAllCoffeeShops(): LiveData<List<LocalCoffeeShop>> {
-        return repository.getAllCoffeeShops()
+    fun getCoffeeShopById(id: String) {
+        viewModelScope.launch {
+            val coffeeShop = coffeeShopRepository.getCoffeeShopById(id)
+            _selectedCoffeeShop.postValue(coffeeShop)
+        }
     }
 
-    fun getCoffeeShopById(id: String): LiveData<LocalCoffeeShop> {
-        return repository.getCoffeeShopById(id)
+    fun getReviewsByCoffeeShopId(coffeeShopId: String) {
+        viewModelScope.launch {
+            val reviews = reviewRepository.getReviewsByCoffeeShopId(coffeeShopId)
+            reviews.observeForever {
+                _reviews.postValue(it)
+            }
+        }
     }
 
-    fun getReviewsByCoffeeShopId(id: String): LiveData<List<Review>> {
-
-        return reviewsRepository.getReviewsByCoffeeShopId(id)
-    }
 
     fun insertCoffeeShopToFirestore(coffeeShop: CloudCoffeeShop) = viewModelScope.launch {
-        repository.insertCoffeeShopToFirestore(coffeeShop)
+        coffeeShopRepository.insertCoffeeShopToFirestore(coffeeShop)
+        }
     }
-}

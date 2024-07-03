@@ -12,11 +12,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.coffeecompass.R
 import com.example.coffeecompass.adapter.ProductAdapter
 import com.example.coffeecompass.adapter.ReviewAdapter
-import com.example.coffeecompass.model.LocalCoffeeShop
+import com.example.coffeecompass.model.CloudCoffeeShop
 import com.example.coffeecompass.model.Product
+import com.example.coffeecompass.model.Review
 import com.example.coffeecompass.viewmodel.CoffeeShopViewModel
 import com.squareup.picasso.Picasso
-
 
 class CoffeeShopDetailActivity : AppCompatActivity() {
 
@@ -40,6 +40,10 @@ class CoffeeShopDetailActivity : AppCompatActivity() {
         coffeeShopImageView = findViewById(R.id.coffeeShopDetailImageView)
 
         val coffeeShopID = intent.getStringExtra("coffeeShopID")
+        coffeeShopID?.let { id ->
+            viewModel.getCoffeeShopById(id)
+            viewModel.getReviewsByCoffeeShopId(id)
+        }
 
         productAdapter = ProductAdapter(emptyList())
         reviewAdapter = ReviewAdapter(emptyList())
@@ -52,14 +56,17 @@ class CoffeeShopDetailActivity : AppCompatActivity() {
         reviewsRecyclerView.layoutManager = LinearLayoutManager(this)
         reviewsRecyclerView.adapter = reviewAdapter
 
-        coffeeShopID?.let { id ->
-            viewModel.getCoffeeShopById(id).observe(this, Observer { coffeeShop ->
-                coffeeShop?.let { updateUI(it) }
-            })
-        }
+        viewModel.selectedCoffeeShop.observe(this, Observer { coffeeShop ->
+            coffeeShop?.let { updateUI(it) }
+        })
+
+        viewModel.reviews.observe(this, Observer { reviews ->
+            updateReviewsUI(reviews)
+            Log.i("CoffeeShopId", coffeeShopID ?: "")
+        })
     }
 
-    private fun updateUI(coffeeShop: LocalCoffeeShop) {
+    private fun updateUI(coffeeShop: CloudCoffeeShop) {
         coffeeShopNameTextView.text = coffeeShop.name
         coffeeShopAddressTextView.text = coffeeShop.address
         coffeeShopRateTextView.text = coffeeShop.rate.toString()
@@ -67,7 +74,6 @@ class CoffeeShopDetailActivity : AppCompatActivity() {
 
         // Assuming you have methods to fetch the products and reviews
         fetchProducts(coffeeShop.id)
-        fetchReviews(coffeeShop.id)
     }
 
     private fun fetchProducts(coffeeShopId: String) {
@@ -79,13 +85,8 @@ class CoffeeShopDetailActivity : AppCompatActivity() {
         productAdapter.updateData(products)
     }
 
-    private fun fetchReviews(coffeeShopId: String) {
-        viewModel.getReviewsByCoffeeShopId(coffeeShopId).observe(this, Observer { reviews ->
-            reviewAdapter.updateData(reviews)
-            Log.println(Log.INFO,"CoffeeShopId",coffeeShopId)
-        })
+    private fun updateReviewsUI(reviews: List<Review>) {
+        // Update UI with reviews
+        reviewAdapter.updateData(reviews)
     }
 }
-
-
-

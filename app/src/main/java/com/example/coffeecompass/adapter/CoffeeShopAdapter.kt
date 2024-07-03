@@ -8,13 +8,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coffeecompass.R
+import com.example.coffeecompass.model.CloudCoffeeShop
 import com.example.coffeecompass.model.LocalCoffeeShop
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 
 class CoffeeShopAdapter(
-    private var coffeeShops: List<LocalCoffeeShop>,
-    private val onCoffeeShopClick: (LocalCoffeeShop) -> Unit
+    private var coffeeShops: List<CloudCoffeeShop>,
+    private val onCoffeeShopClick: (CloudCoffeeShop) -> Unit
 ) : RecyclerView.Adapter<CoffeeShopAdapter.CoffeeShopViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CoffeeShopViewHolder {
@@ -31,21 +32,21 @@ class CoffeeShopAdapter(
         return coffeeShops.size
     }
 
-    fun updateData(newCoffeeShops: List<LocalCoffeeShop>) {
+    fun updateData(newCoffeeShops: List<CloudCoffeeShop>) {
         coffeeShops = newCoffeeShops
         notifyDataSetChanged()
     }
 
     class CoffeeShopViewHolder(
         itemView: View,
-        private val onCoffeeShopClick: (LocalCoffeeShop) -> Unit
+        private val onCoffeeShopClick: (CloudCoffeeShop) -> Unit
     ) : RecyclerView.ViewHolder(itemView) {
         private val imageView: ImageView = itemView.findViewById(R.id.coffeeShopImageView)
         private val nameTextView: TextView = itemView.findViewById(R.id.coffeeShopNameTextView)
         private val addressTextView: TextView = itemView.findViewById(R.id.coffeeShopAddressTextView)
         private val rateTextView: TextView = itemView.findViewById(R.id.coffeeShopRateTextView)
 
-        fun bind(coffeeShop: LocalCoffeeShop) {
+        fun bind(coffeeShop: CloudCoffeeShop) {
             nameTextView.text = coffeeShop.name
             addressTextView.text = coffeeShop.address
             rateTextView.text = coffeeShop.rate.toString()
