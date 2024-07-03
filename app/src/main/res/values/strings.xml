@@ -33,4 +33,8 @@
     <string name="select_coffee_shop">Select Coffee Shop</string>
     <string name="add_review">Add Review</string>
     <string name="you_have_no_reviews_click_here_to_add_a_review">You have no reviews. Click here to add a review.</string>
+    <string name="flavor">Flavor</string>
+    <string name="strong">Strong</string>
+    <string name="mild">Mild</string>
+    <string name="decaf">Decaf</string>
 </resources>

@@ -26,12 +26,15 @@ class AddReviewActivity : AppCompatActivity() {
 
     private lateinit var coffeeShopNameAutoCompleteTextView: AutoCompleteTextView
     private lateinit var ratingBar: RatingBar
+    private lateinit var priceRadioGroup: RadioGroup
+    private lateinit var flavorRadioGroup: RadioGroup
     private lateinit var reviewBodyEditText: EditText
     private lateinit var selectedImageView: ImageView
     private lateinit var selectImageButton: Button
     private lateinit var submitReviewButton: Button
 
     private var selectedImageUri: Uri? = null
+    private var selectedCoffeeShopName: String? = null
 
     companion object {
         const val PICK_IMAGE_REQUEST = 1
@@ -49,6 +52,8 @@ class AddReviewActivity : AppCompatActivity() {
 
         coffeeShopNameAutoCompleteTextView = findViewById(R.id.autoCompleteTextViewCoffeeShopName)
         ratingBar = findViewById(R.id.ratingBar)
+        priceRadioGroup = findViewById(R.id.priceRadioGroup)
+        flavorRadioGroup = findViewById(R.id.flavorRadioGroup)
         reviewBodyEditText = findViewById(R.id.editTextReviewBody)
         selectedImageView = findViewById(R.id.imageViewSelectedImage)
         selectImageButton = findViewById(R.id.buttonSelectImage)
@@ -59,7 +64,7 @@ class AddReviewActivity : AppCompatActivity() {
         }
 
         submitReviewButton.setOnClickListener {
-            submitReview()
+            validateAndSubmitReview()
         }
 
         fetchCoffeeShopNames()
@@ -79,14 +84,18 @@ class AddReviewActivity : AppCompatActivity() {
     private fun setupAutoCompleteTextView(coffeeShopNames: List<String>) {
         val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, coffeeShopNames)
         coffeeShopNameAutoCompleteTextView.setAdapter(adapter)
-        coffeeShopNameAutoCompleteTextView.threshold = 1 // Start showing suggestions after one character
+        coffeeShopNameAutoCompleteTextView.threshold = 1
+
+        coffeeShopNameAutoCompleteTextView.setOnItemClickListener { _, _, position, _ ->
+            selectedCoffeeShopName = adapter.getItem(position)
+        }
     }
 
     private fun showImagePickerOptions() {
         val options = arrayOf("Take Photo", "Choose from Gallery")
         val builder = android.app.AlertDialog.Builder(this)
         builder.setTitle("Select Profile Image")
-        builder.setItems(options) { dialog, which ->
+        builder.setItems(options) { _, which ->
             when (which) {
                 0 -> takePhotoFromCamera()
                 1 -> chooseImageFromGallery()
@@ -132,11 +141,62 @@ class AddReviewActivity : AppCompatActivity() {
         return Uri.parse(path)
     }
 
-    private fun submitReview() {
-        val coffeeShopName = coffeeShopNameAutoCompleteTextView.text.toString()
-        val rating = ratingBar.rating.toInt()
+    private fun validateAndSubmitReview() {
+        val rating = ratingBar.rating
         val reviewBody = reviewBodyEditText.text.toString()
+        val price = when (priceRadioGroup.checkedRadioButtonId) {
+            R.id.price1 -> 1
+            R.id.price2 -> 2
+            R.id.price3 -> 3
+            R.id.price4 -> 4
+            R.id.price5 -> 5
+            else -> 0
+        }
+        val flavor = when (flavorRadioGroup.checkedRadioButtonId) {
+            R.id.flavorStrong -> "Strong"
+            R.id.flavorMild -> "Mild"
+            R.id.flavorDecaf -> "Decaf"
+            else -> ""
+        }
 
+        if (selectedCoffeeShopName.isNullOrEmpty()) {
+            showMessage("Please select a coffee shop name")
+            return
+        }
+
+        if (rating == 0f) {
+            showMessage("Please provide a rating")
+            return
+        }
+
+        if (reviewBody.isEmpty()) {
+            showMessage("Please write a review")
+            return
+        }
+
+        if (selectedImageUri == null) {
+            showMessage("Please upload an image")
+            return
+        }
+
+        if (price == 0) {
+            showMessage("Please select a price")
+            return
+        }
+
+        if (flavor.isEmpty()) {
+            showMessage("Please select a flavor")
+            return
+        }
+
+        submitReview(selectedCoffeeShopName!!, rating.toInt(), reviewBody, price, flavor)
+    }
+
+    private fun showMessage(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun submitReview(coffeeShopName: String, rating: Int, reviewBody: String, price: Int, flavor: String) {
         val reviewId = UUID.randomUUID().toString()
         val userId = auth.currentUser?.uid ?: ""
 
@@ -152,14 +212,21 @@ class AddReviewActivity : AppCompatActivity() {
                             date = com.google.firebase.Timestamp.now(),
                             rate = rating,
                             body = reviewBody,
-                            photo = downloadUri.toString()
+                            photo = downloadUri.toString(),
+                            price = price,
+                            flavor = flavor
                         )
                         reviewsRepository.addReview(review) { success ->
                             if (success) {
                                 updateUserReviews(reviewId)
+                            } else {
+                                showMessage("Error submitting review")
                             }
                         }
                     }
+                }
+                .addOnFailureListener {
+                    showMessage("Error uploading image")
                 }
         }
     }
@@ -170,6 +237,9 @@ class AddReviewActivity : AppCompatActivity() {
             .update("reviews", com.google.firebase.firestore.FieldValue.arrayUnion(reviewId))
             .addOnSuccessListener {
                 finish() // Go back to UserProfileActivity
+            }
+            .addOnFailureListener {
+                showMessage("Error updating user reviews")
             }
     }
 }

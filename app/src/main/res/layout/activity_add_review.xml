@@ -4,42 +4,115 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
-
-    <ImageView
-        android:id="@+id/imageViewSelectedImage"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginTop="16dp"
-        android:background="@android:color/darker_gray"
-        android:contextClickable="true"
-        android:contentDescription="@string/selected_image"/>
+    android:padding="16dp"
+    android:divider="?android:attr/dividerVertical"
+    android:showDividers="middle">
 
     <AutoCompleteTextView
         android:id="@+id/autoCompleteTextViewCoffeeShopName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/select_coffee_shop"
-        android:padding="8dp"
-        android:background="@android:color/white"/>
+        android:hint="@string/select_coffee_shop" />
 
     <RatingBar
         android:id="@+id/ratingBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
         android:numStars="5"
         android:stepSize="1.0"
-        android:rating="4.8"/>
+        android:layout_gravity="center_horizontal"
+        android:paddingTop="16dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Price"
+        android:textSize="16sp"
+        android:layout_marginTop="16dp"/>
+
+    <RadioGroup
+        android:id="@+id/priceRadioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal">
+
+        <RadioButton
+            android:id="@+id/price1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$" />
+
+        <RadioButton
+            android:id="@+id/price2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$$" />
+
+        <RadioButton
+            android:id="@+id/price3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$$$" />
+
+        <RadioButton
+            android:id="@+id/price4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$$$$" />
+
+        <RadioButton
+            android:id="@+id/price5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$$$$$" />
+    </RadioGroup>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/flavor"
+        android:textSize="16sp"
+        android:layout_marginTop="16dp"/>
+
+    <RadioGroup
+        android:id="@+id/flavorRadioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal">
+
+        <RadioButton
+            android:id="@+id/flavorStrong"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/strong" />
+
+        <RadioButton
+            android:id="@+id/flavorMild"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/mild" />
+
+        <RadioButton
+            android:id="@+id/flavorDecaf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/decaf" />
+    </RadioGroup>
 
     <EditText
         android:id="@+id/editTextReviewBody"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/write_your_review_here"
-        android:padding="8dp"
-        android:layout_marginTop="16dp"
-        android:background="@android:color/white"/>
+        android:layout_marginTop="16dp" />
+
+    <ImageView
+        android:id="@+id/imageViewSelectedImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp" />
 
     <Button
         android:id="@+id/buttonSelectImage"
@@ -47,7 +120,7 @@
         android:layout_height="wrap_content"
         android:text="@string/upload_image"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="16dp" />
 
     <Button
         android:id="@+id/buttonSubmitReview"
@@ -55,5 +128,6 @@
         android:layout_height="wrap_content"
         android:text="@string/submit_review"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="16dp" />
+
 </LinearLayout>
