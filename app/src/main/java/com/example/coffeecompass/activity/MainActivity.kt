@@ -5,8 +5,13 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.example.coffeecompass.R
+import com.example.coffeecompass.model.CloudCoffeeShop
+import com.example.coffeecompass.model.Product
 import com.example.coffeecompass.repository.UserRepository
+import com.example.coffeecompass.util.FirestoreHelper
+import com.example.coffeecompass.util.FirestoreHelper.generateUniqueId
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -16,6 +21,7 @@ import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -52,6 +58,7 @@ class MainActivity : AppCompatActivity() {
         findViewById<Button>(R.id.signUpButton).setOnClickListener {
             startActivity(Intent(this, SignupActivity::class.java))
         }
+
     }
 
     private fun signIn() {
@@ -105,4 +112,6 @@ class MainActivity : AppCompatActivity() {
     companion object {
         private const val RC_SIGN_IN = 9001
     }
+
+
 }

@@ -81,6 +81,8 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.play.services.auth)
     implementation(libs.circleimageview)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.fragment.ktx)
     implementation(platform(libs.firebase.bom))
     implementation(platform(libs.androidx.compose.bom))
 

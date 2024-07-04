@@ -7,13 +7,13 @@ import androidx.lifecycle.viewModelScope
 import com.example.coffeecompass.model.CloudCoffeeShop
 import com.example.coffeecompass.model.Review
 import com.example.coffeecompass.repository.CoffeeShopRepository
-import com.example.coffeecompass.repository.ReviewsRepository
+import com.example.coffeecompass.repository.ReviewRepository
 import kotlinx.coroutines.launch
 
 class CoffeeShopViewModel : ViewModel() {
 
     private val coffeeShopRepository = CoffeeShopRepository()
-    private val reviewRepository = ReviewsRepository()
+    private val reviewRepository = ReviewRepository()
     private val _coffeeShops = MutableLiveData<List<CloudCoffeeShop>>()
     val coffeeShops: LiveData<List<CloudCoffeeShop>> get() = _coffeeShops
 
@@ -27,7 +27,7 @@ class CoffeeShopViewModel : ViewModel() {
         fetchCoffeeShops()
     }
 
-    private fun fetchCoffeeShops() {
+    fun fetchCoffeeShops() {
         viewModelScope.launch {
             val coffeeShops = coffeeShopRepository.fetchAllCoffeeShops()
             _coffeeShops.postValue(coffeeShops)
@@ -51,7 +51,4 @@ class CoffeeShopViewModel : ViewModel() {
     }
 
 
-    fun insertCoffeeShopToFirestore(coffeeShop: CloudCoffeeShop) = viewModelScope.launch {
-        coffeeShopRepository.insertCoffeeShopToFirestore(coffeeShop)
-        }
-    }
+}

@@ -9,6 +9,7 @@ data class User(
     val followers: ArrayList<String> = arrayListOf(),
     val following: ArrayList<String> = arrayListOf(),
     val reviews: ArrayList<String> = arrayListOf(),
+    var likedCoffeeShops: ArrayList<String> = ArrayList(),
     val userSettings: UserSettings = UserSettings()
 )
 

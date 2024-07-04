@@ -2,6 +2,7 @@ package com.example.coffeecompass.activity
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
@@ -13,14 +14,15 @@ import com.example.coffeecompass.R
 import com.example.coffeecompass.adapter.ProductAdapter
 import com.example.coffeecompass.adapter.ReviewAdapter
 import com.example.coffeecompass.model.CloudCoffeeShop
-import com.example.coffeecompass.model.Product
 import com.example.coffeecompass.model.Review
 import com.example.coffeecompass.viewmodel.CoffeeShopViewModel
+import com.example.coffeecompass.viewmodel.UserViewModel
 import com.squareup.picasso.Picasso
 
 class CoffeeShopDetailActivity : AppCompatActivity() {
 
     private val viewModel: CoffeeShopViewModel by viewModels()
+    private val userViewModel: UserViewModel by viewModels()
 
     private lateinit var productAdapter: ProductAdapter
     private lateinit var reviewAdapter: ReviewAdapter
@@ -29,15 +31,17 @@ class CoffeeShopDetailActivity : AppCompatActivity() {
     private lateinit var coffeeShopAddressTextView: TextView
     private lateinit var coffeeShopRateTextView: TextView
     private lateinit var coffeeShopImageView: ImageView
+    private lateinit var likeButton: ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_coffee_shop_detail)
 
-        coffeeShopNameTextView = findViewById(R.id.coffeeShopNameTextView)
+        coffeeShopNameTextView = findViewById(R.id.coffeeShopName)
         coffeeShopAddressTextView = findViewById(R.id.coffeeShopAddressTextView)
         coffeeShopRateTextView = findViewById(R.id.coffeeShopRateTextView)
         coffeeShopImageView = findViewById(R.id.coffeeShopDetailImageView)
+        likeButton = findViewById(R.id.likeButton)
 
         val coffeeShopID = intent.getStringExtra("coffeeShopID")
         coffeeShopID?.let { id ->
@@ -46,7 +50,7 @@ class CoffeeShopDetailActivity : AppCompatActivity() {
         }
 
         productAdapter = ProductAdapter(emptyList())
-        reviewAdapter = ReviewAdapter(emptyList())
+        reviewAdapter = ReviewAdapter(emptyList(), this)
 
         val productsRecyclerView: RecyclerView = findViewById(R.id.productsRecyclerView)
         productsRecyclerView.layoutManager = LinearLayoutManager(this)
@@ -57,13 +61,22 @@ class CoffeeShopDetailActivity : AppCompatActivity() {
         reviewsRecyclerView.adapter = reviewAdapter
 
         viewModel.selectedCoffeeShop.observe(this, Observer { coffeeShop ->
-            coffeeShop?.let { updateUI(it) }
+            coffeeShop?.let {
+                updateUI(it)
+                updateLikeButton(it)
+            }
         })
 
         viewModel.reviews.observe(this, Observer { reviews ->
             updateReviewsUI(reviews)
             Log.i("CoffeeShopId", coffeeShopID ?: "")
         })
+
+        likeButton.setOnClickListener {
+            viewModel.selectedCoffeeShop.value?.let { coffeeShop ->
+                userViewModel.toggleLikeCoffeeShop(coffeeShop.id)
+            }
+        }
     }
 
     private fun updateUI(coffeeShop: CloudCoffeeShop) {
@@ -71,18 +84,17 @@ class CoffeeShopDetailActivity : AppCompatActivity() {
         coffeeShopAddressTextView.text = coffeeShop.address
         coffeeShopRateTextView.text = coffeeShop.rate.toString()
         Picasso.get().load(coffeeShop.imageUrl).into(coffeeShopImageView)
-
-        // Assuming you have methods to fetch the products and reviews
-        fetchProducts(coffeeShop.id)
+        productAdapter.updateData(coffeeShop.products)
     }
 
-    private fun fetchProducts(coffeeShopId: String) {
-        // Implement fetching products from Firestore and update the adapter
-        val products = listOf(
-            Product("1", "Latte", 4.5f),
-            Product("2", "Espresso", 3.0f)
-        )
-        productAdapter.updateData(products)
+    private fun updateLikeButton(coffeeShop: CloudCoffeeShop) {
+        userViewModel.user.observe(this, Observer { user ->
+            if (user?.likedCoffeeShops?.contains(coffeeShop.id) == true) {
+                likeButton.setImageResource(R.drawable.ic_like_selected)
+            } else {
+                likeButton.setImageResource(R.drawable.ic_like_unselected)
+            }
+        })
     }
 
     private fun updateReviewsUI(reviews: List<Review>) {

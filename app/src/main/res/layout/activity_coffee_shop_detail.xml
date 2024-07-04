@@ -17,13 +17,31 @@
         android:elevation="8dp" />
 
 
-    <TextView
-        android:id="@+id/coffeeShopNameTextView"
-        android:layout_width="wrap_content"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="28sp"
-        android:layout_marginTop="16dp"
-        android:textStyle="bold"/>
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/coffeeShopName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Coffee Shop Name"
+            android:textAppearance="?attr/textAppearanceBody1" />
+
+        <ImageButton
+            android:id="@+id/likeButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_like_unselected"
+            android:contentDescription="@string/like_button" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/coffeeShopAddressTextView"

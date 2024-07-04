@@ -1,17 +1,15 @@
 package com.example.coffeecompass.model
 
-data class Product(
-    val id: String,
-    val name: String,
-    val price: Float
-)
+import com.example.coffeecompass.util.FirestoreHelper.generateUniqueId
 
 data class CloudCoffeeShop(
-    val id: String = "",
-    val name: String = "",
-    val address: String = "",
-    val rate: Float = 0.0f,
-    val imageUrl: String = "",
-    val reviews: ArrayList<String> = arrayListOf(),
-    val products: ArrayList<Product> = arrayListOf()
+    var id: String = "",
+    var name: String = "",
+    var address: String = "",
+    var rate: Float = 0.0f,
+    var imageUrl: String = "",
+    var reviews: List<String> = listOf(),
+    var products: List<Product> = listOf()
 )
+
+

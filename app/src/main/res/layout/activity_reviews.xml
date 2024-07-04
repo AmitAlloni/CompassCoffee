@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.ReviewsFragment">
+    tools:context=".activity.ReviewsActivity">
 
     <!-- Top bar with search and sorting -->
     <LinearLayout
@@ -57,5 +57,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        app:menu="@menu/bottom_nav_menu" />
+        android:background="?android:attr/windowBackground"
+        app:menu="@menu/bottom_nav_menu"
+        app:itemIconTint="@color/selector_bottom_nav_color"
+        app:itemTextColor="@color/selector_bottom_nav_color"
+        app:itemTextAppearanceActive="@style/TextAppearance.BottomNavigation.Active"
+        app:itemTextAppearanceInactive="@style/TextAppearance.BottomNavigation.Inactive"
+        app:labelVisibilityMode="labeled" />
+
 </RelativeLayout>

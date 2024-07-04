@@ -9,9 +9,18 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 
-class ReviewsRepository {
+class ReviewRepository {
 
     private val firestore = FirebaseFirestore.getInstance()
+
+    suspend fun fetchAllReviews(): List<Review> {
+        return try {
+            val snapshot = firestore.collection("reviews").get().await()
+            snapshot.toObjects(Review::class.java)
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
 
     private suspend fun fetchAllReviewsFromFirestore(reviewIds: List<String>): List<Review> {
         val reviews = mutableListOf<Review>()
@@ -56,5 +65,23 @@ class ReviewsRepository {
                 Log.e("ReviewsRepository", "Error adding review", e)
                 callback(false)
             }
+    }
+
+    fun getReviewById(reviewId: String): LiveData<Review?> = liveData(Dispatchers.IO) {
+        try {
+            val document = firestore.collection("reviews").document(reviewId).get().await()
+            val review = document.toObject(Review::class.java)
+            emit(review)
+        } catch (e: Exception) {
+            emit(null)
+        }
+    }
+
+    suspend fun deleteReview(reviewId: String) {
+        try {
+            firestore.collection("reviews").document(reviewId).delete().await()
+        } catch (e: Exception) {
+            // Handle exception if needed
+        }
     }
 }

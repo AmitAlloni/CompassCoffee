@@ -1,17 +1,15 @@
-package com.example.coffeecompass.fragment
+package com.example.coffeecompass.activity
 
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.MenuItem
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,9 +17,9 @@ import com.example.coffeecompass.R
 import com.example.coffeecompass.adapter.ReviewAdapter
 import com.example.coffeecompass.model.Review
 import com.example.coffeecompass.viewmodel.ReviewViewModel
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
-
-class ReviewsFragment : Fragment() {
+class ReviewsActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
 
     private val viewModel: ReviewViewModel by viewModels()
     private lateinit var reviewAdapter: ReviewAdapter
@@ -30,34 +28,62 @@ class ReviewsFragment : Fragment() {
     private lateinit var searchWriterTextView: AutoCompleteTextView
     private lateinit var sortByRatingButton: Button
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_reviews, container, false)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_reviews)
 
-        searchCoffeeNameTextView = view.findViewById(R.id.searchCoffeeNameTextView)
-        searchFlavorTextView = view.findViewById(R.id.searchFlavorTextView)
-        searchWriterTextView = view.findViewById(R.id.searchWriterTextView)
-        sortByRatingButton = view.findViewById(R.id.sortByRatingButton)
+        searchCoffeeNameTextView = findViewById(R.id.searchCoffeeNameTextView)
+        searchFlavorTextView = findViewById(R.id.searchFlavorTextView)
+        searchWriterTextView = findViewById(R.id.searchWriterTextView)
+        sortByRatingButton = findViewById(R.id.sortByRatingButton)
 
         reviewAdapter = ReviewAdapter(emptyList(), this)
 
-        val recyclerView: RecyclerView = view.findViewById(R.id.recyclerViewReviews)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        val recyclerView: RecyclerView = findViewById(R.id.recyclerViewReviews)
+        recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = reviewAdapter
 
         // Observe LiveData and update RecyclerView adapter
-        viewModel.reviews.observe(viewLifecycleOwner, Observer { reviews ->
+        viewModel.reviews.observe(this, Observer { reviews ->
             reviewAdapter.updateData(reviews)
             setupAutoComplete(reviews)
         })
+
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        bottomNavigationView.setOnNavigationItemSelectedListener(this)
 
         // Set up search and sorting
         setupSearch()
         setupSorting()
 
-        return view
+        val reviewId = intent.getStringExtra("REVIEW_ID")
+        reviewId?.let {
+            viewModel.getReviewById(it).observe(this, Observer { review ->
+                review?.let { displaySingleReview(it) }
+            })
+        }
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.navigation_home -> {
+                startActivity(Intent(this, HomeActivity::class.java))
+                return true
+            }
+            R.id.navigation_coffee_shops -> {
+                startActivity(Intent(this, CoffeeShopActivity::class.java))
+                return true
+            }
+            R.id.navigation_reviews -> {
+                // Stay in the same activity
+                return true
+            }
+            R.id.navigation_profile -> {
+                startActivity(Intent(this, UserProfileActivity::class.java))
+                return true
+            }
+            else -> return false
+        }
     }
 
     private fun setupAutoComplete(reviews: List<Review>) {
@@ -65,9 +91,9 @@ class ReviewsFragment : Fragment() {
         val flavors = reviews.map { it.flavor }.distinct()
         val writers = reviews.map { it.writer }.distinct()
 
-        val coffeeNameAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, coffeeNames)
-        val flavorAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, flavors)
-        val writerAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, writers)
+        val coffeeNameAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, coffeeNames)
+        val flavorAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, flavors)
+        val writerAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, writers)
 
         searchCoffeeNameTextView.setAdapter(coffeeNameAdapter)
         searchFlavorTextView.setAdapter(flavorAdapter)
@@ -121,5 +147,11 @@ class ReviewsFragment : Fragment() {
             val sortedList = viewModel.reviews.value?.sortedByDescending { it.rate }
             sortedList?.let { reviewAdapter.updateData(it) }
         }
+    }
+
+    private fun displaySingleReview(review: Review) {
+        // Display the review details on the screen
+        // Assuming you have TextViews or other UI elements to display the review details
+        // e.g., coffeeShopNameTextView.text = review.coffeeShop
     }
 }

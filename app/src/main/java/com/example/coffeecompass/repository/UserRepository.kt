@@ -5,11 +5,21 @@ import com.example.coffeecompass.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.tasks.await
 
 class UserRepository {
 
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
+
+    suspend fun getUserById(userId: String): User? {
+        return try {
+            val document = firestore.collection("users").document(userId).get().await()
+            document.toObject(User::class.java)
+        } catch (e: Exception) {
+            null
+        }
+    }
 
     fun saveUserToFirestore(user: FirebaseUser) {
         val userData = User(
@@ -58,4 +68,25 @@ class UserRepository {
                 }
             }
     }
+
+    suspend fun updateUser(user: User) {
+        try {
+            firestore.collection("users").document(user.uid).set(user).await()
+        } catch (e: Exception) {
+            Log.e("UserRepository", "Failed to update user data", e)
+        }
+    }
+
+    suspend fun toggleLikeCoffeeShop(userId: String, coffeeShopId: String) {
+        val user = getUserById(userId)
+        user?.let {
+            if (it.likedCoffeeShops.contains(coffeeShopId)) {
+                it.likedCoffeeShops.remove(coffeeShopId)
+            } else {
+                it.likedCoffeeShops.add(coffeeShopId)
+            }
+            updateUser(it)
+        }
+    }
+
 }

@@ -11,26 +11,29 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coffeecompass.R
 import com.example.coffeecompass.adapter.CoffeeShopAdapter
+import com.example.coffeecompass.adapter.HomeCoffeeShopAdapter
 import com.example.coffeecompass.fragment.*
 import com.example.coffeecompass.viewmodel.CoffeeShopViewModel
+import com.example.coffeecompass.viewmodel.UserViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class HomeActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
 
     private val viewModel: CoffeeShopViewModel by viewModels()
-    private lateinit var coffeeShopAdapter: CoffeeShopAdapter
+    private val userViewModel: UserViewModel by viewModels()
+    private lateinit var coffeeShopAdapter: HomeCoffeeShopAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
 
-        coffeeShopAdapter = CoffeeShopAdapter(listOf()) { coffeeShop ->
+        coffeeShopAdapter = HomeCoffeeShopAdapter(listOf(), { coffeeShop ->
             val intent = Intent(this, CoffeeShopDetailActivity::class.java).apply {
                 putExtra("coffeeShopID", coffeeShop.id)
             }
             startActivity(intent)
-        }
+        }, this, userViewModel)
 
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -44,7 +47,6 @@ class HomeActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navigation_home -> {
-                    startActivity(Intent(this, HomeActivity::class.java))
                     true
                 }
                 R.id.navigation_coffee_shops -> {
@@ -52,7 +54,7 @@ class HomeActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                     true
                 }
                 R.id.navigation_reviews -> {
-                    // Handle reviews click
+                    startActivity(Intent(this, ReviewsActivity::class.java))
                     true
                 }
                 R.id.navigation_profile -> {

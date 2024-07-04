@@ -48,4 +48,5 @@
     <string name="update_picture">Update Picture</string>
     <string name="update_password">Update Password</string>
     <string name="logout">Logout</string>
+    <string name="like_button">like button\n</string>
 </resources>
