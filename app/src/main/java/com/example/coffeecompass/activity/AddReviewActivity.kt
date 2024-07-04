@@ -11,7 +11,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.coffeecompass.R
 import com.example.coffeecompass.model.Review
-import com.example.coffeecompass.repository.ReviewsRepository
+import com.example.coffeecompass.repository.ReviewRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -23,7 +23,7 @@ class AddReviewActivity : AppCompatActivity() {
     private lateinit var firestore: FirebaseFirestore
     private lateinit var storage: FirebaseStorage
     private lateinit var auth: FirebaseAuth
-    private lateinit var reviewsRepository: ReviewsRepository
+    private lateinit var reviewRepository: ReviewRepository
 
     private lateinit var coffeeShopNameAutoCompleteTextView: AutoCompleteTextView
     private lateinit var ratingBar: RatingBar
@@ -51,7 +51,7 @@ class AddReviewActivity : AppCompatActivity() {
         firestore = FirebaseFirestore.getInstance()
         storage = FirebaseStorage.getInstance()
         auth = FirebaseAuth.getInstance()
-        reviewsRepository = ReviewsRepository()
+        reviewRepository = ReviewRepository()
 
         coffeeShopNameAutoCompleteTextView = findViewById(R.id.autoCompleteTextViewCoffeeShopName)
         ratingBar = findViewById(R.id.ratingBar)
@@ -234,7 +234,7 @@ class AddReviewActivity : AppCompatActivity() {
                             price = price,
                             flavor = flavor
                         )
-                        reviewsRepository.addReview(review) { success ->
+                        reviewRepository.addReview(review) { success ->
                             if (success) {
                                 updateUserReviews(reviewId)
                                 updateCoffeeShopReviews(coffeeShopName, reviewId)

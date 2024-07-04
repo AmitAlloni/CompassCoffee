@@ -16,12 +16,12 @@ import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import androidx.lifecycle.Observer
 
-class CoffeeShopAdapter(
+class HomeCoffeeShopAdapter(
     private var coffeeShops: List<CloudCoffeeShop>,
     private val onClick: (CloudCoffeeShop) -> Unit,
     private val lifecycleOwner: LifecycleOwner,
     private val userViewModel: UserViewModel
-) : RecyclerView.Adapter<CoffeeShopAdapter.CoffeeShopViewHolder>() {
+) : RecyclerView.Adapter<HomeCoffeeShopAdapter.CoffeeShopViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CoffeeShopViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_coffee_shop, parent, false)
@@ -50,12 +50,23 @@ class CoffeeShopAdapter(
         private val nameTextView: TextView = itemView.findViewById(R.id.coffeeShopNameTextView)
         private val addressTextView: TextView = itemView.findViewById(R.id.coffeeShopAddressTextView)
         private val rateTextView: TextView = itemView.findViewById(R.id.coffeeShopRateTextView)
-
+//        private val likeButton: ImageButton = itemView.findViewById(R.id.likeButton)
 
         fun bind(coffeeShop: CloudCoffeeShop) {
             nameTextView.text = coffeeShop.name
             addressTextView.text = coffeeShop.address
             rateTextView.text = coffeeShop.rate.toString()
+
+//            userViewModel.user.observe(lifecycleOwner, Observer { user ->
+//                if (user?.likedCoffeeShops?.contains(coffeeShop.id) == true) {
+//                    likeButton.setImageResource(R.drawable.ic_like_selected)
+//                } else {
+//                    likeButton.setImageResource(R.drawable.ic_like_unselected)
+//                }
+//            })
+//            likeButton.setOnClickListener {
+//                userViewModel.toggleLikeCoffeeShop(coffeeShop.id)
+//            }
 
             // Load image using Picasso with logging
             val imageUrl = coffeeShop.imageUrl

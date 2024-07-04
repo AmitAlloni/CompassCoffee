@@ -140,4 +140,13 @@
         android:visibility="gone"
         android:layout_marginBottom="16dp" />
 
+    <Button
+        android:id="@+id/deleteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete Review"
+        android:backgroundTint="?attr/colorError"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="16dp" />
+
 </LinearLayout>

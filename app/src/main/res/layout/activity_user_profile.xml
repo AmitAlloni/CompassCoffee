@@ -61,6 +61,14 @@
             android:layout_marginStart="180dp"/>
     </LinearLayout>
 
+    <Button
+        android:id="@+id/buttonViewAllReviews"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Click here to view all your reviews"
+        android:layout_marginTop="8dp"
+        android:layout_gravity="start"/>
+
     <!-- No Reviews Text -->
     <TextView
         android:id="@+id/textViewNoReviews"

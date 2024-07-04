@@ -41,6 +41,7 @@
         <activity android:name=".activity.ViewReviewActivity" />
         <activity android:name=".activity.UpdatePasswordActivity" />
         <activity android:name=".activity.CoffeeShopActivity" />
+        <activity android:name=".activity.ReviewsActivity" />
 
     </application>
 

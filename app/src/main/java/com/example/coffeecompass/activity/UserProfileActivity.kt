@@ -12,9 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coffeecompass.R
 import com.example.coffeecompass.adapter.ReviewForUserAdapter
-import com.example.coffeecompass.model.Review
 import com.example.coffeecompass.model.User
-import com.example.coffeecompass.repository.ReviewsRepository
+import com.example.coffeecompass.repository.ReviewRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.Picasso
@@ -26,7 +25,7 @@ class UserProfileActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var reviewForUserAdapter: ReviewForUserAdapter
     private lateinit var reviewsRecyclerView: RecyclerView
-    private lateinit var reviewsRepository: ReviewsRepository
+    private lateinit var reviewRepository: ReviewRepository
     private lateinit var noReviewsTextView: TextView
     private lateinit var addReviewButton: Button
     private lateinit var profileImageView: ImageView
@@ -34,6 +33,7 @@ class UserProfileActivity : AppCompatActivity() {
     private lateinit var followersTextView: TextView
     private lateinit var followingTextView: TextView
     private lateinit var userSettingsButton: Button
+    private lateinit var viewAllReviewsButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +41,7 @@ class UserProfileActivity : AppCompatActivity() {
 
         firestore = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()
-        reviewsRepository = ReviewsRepository()
+        reviewRepository = ReviewRepository()
 
         profileImageView = findViewById(R.id.imageViewProfile)
         usernameTextView = findViewById(R.id.textViewGreeting)
@@ -51,6 +51,7 @@ class UserProfileActivity : AppCompatActivity() {
         reviewsRecyclerView = findViewById(R.id.reviewsRecyclerView)
         noReviewsTextView = findViewById(R.id.textViewNoReviews)
         addReviewButton = findViewById(R.id.buttonAddReview)
+        viewAllReviewsButton = findViewById(R.id.buttonViewAllReviews)
 
         val uid = auth.currentUser?.uid
         uid?.let {
@@ -68,6 +69,12 @@ class UserProfileActivity : AppCompatActivity() {
 
         noReviewsTextView.setOnClickListener {
             val intent = Intent(this, AddReviewActivity::class.java)
+            startActivity(intent)
+        }
+
+        viewAllReviewsButton.setOnClickListener {
+            val intent = Intent(this, ReviewsActivity::class.java)
+            intent.putExtra("SORT_BY_USER", true)
             startActivity(intent)
         }
     }
@@ -112,7 +119,7 @@ class UserProfileActivity : AppCompatActivity() {
 
     private fun loadUserReviews(reviewIds: List<String>) {
         lifecycleScope.launch {
-            val reviews = reviewsRepository.getReviewsByIds(reviewIds)
+            val reviews = reviewRepository.getReviewsByIds(reviewIds)
             if (reviews.isEmpty()) {
                 noReviewsTextView.visibility = View.VISIBLE
                 reviewsRecyclerView.visibility = View.GONE
